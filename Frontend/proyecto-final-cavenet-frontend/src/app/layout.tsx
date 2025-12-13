@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "/global.css";
+import "./globals.css";   // ✅ Importación correcta
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { AuthProvider } from "../context/AuthContext";
 
 export const metadata: Metadata = {
   title: "CAVENET",
@@ -16,14 +17,17 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="font-sans bg-white text-cavDark antialiased">
-        {/* 🔹 Navbar global */}
-        <Navbar />
+        {/* 🔹 Contexto de autenticación */}
+        <AuthProvider>
+          {/* 🔹 Navbar global */}
+          <Navbar />
 
-        {/* 🔹 Contenido dinámico */}
-        {children}
+          {/* 🔹 Contenido dinámico */}
+          <main className="pt-20 min-h-screen">{children}</main>
 
-        {/* 🔹 Footer global */}
-        <Footer />
+          {/* 🔹 Footer global */}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

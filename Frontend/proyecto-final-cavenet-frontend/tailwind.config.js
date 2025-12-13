@@ -9,15 +9,11 @@ module.exports = {
       colors: {
         cavenetBlue: "#004aad",
         cavenetIndigo: "#3b82f6",
+        cavGray: "#f5f5f5",
         cavDark: "#1a1a1a",
-        cavGray: "#f3f4f6",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Arial", "Helvetica", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "Courier New", "monospace"],
-      },
-      boxShadow: {
-        card: "0 4px 12px rgba(0,0,0,0.1)",
+        sans: ["Inter", "Helvetica", "Arial", "sans-serif"],
       },
     },
   },

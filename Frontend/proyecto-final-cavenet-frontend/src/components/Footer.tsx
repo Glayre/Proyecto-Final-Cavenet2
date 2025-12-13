@@ -1,3 +1,5 @@
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+
 export default function Footer() {
   return (
     <footer className="bg-cavenetBlue text-white px-6 py-10 mt-12">
@@ -19,15 +21,30 @@ export default function Footer() {
             <li><a href="/planes" className="hover:text-cavenetIndigo">Planes</a></li>
             <li><a href="/mi-cuenta" className="hover:text-cavenetIndigo">Mi Cuenta</a></li>
             <li><a href="/contacto" className="hover:text-cavenetIndigo">Contacto</a></li>
+            <li><a href="/reporte-pago" className="hover:text-cavenetIndigo">Reportar Pago</a></li>
+            <li><a href="/cobertura" className="hover:text-cavenetIndigo">Cobertura</a></li>
           </ul>
         </div>
 
-        {/* 🔹 Contacto */}
+        {/* 🔹 Contacto y redes sociales */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Contacto</h3>
           <p className="text-sm">📍 Aragua, Venezuela</p>
           <p className="text-sm">📞 +58 000-0000000</p>
           <p className="text-sm">✉️ soporte@cavenet.com</p>
+
+          {/* Redes sociales */}
+          <div className="flex gap-4 mt-4">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-cavenetIndigo">
+              <FaFacebookF size={20} />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-cavenetIndigo">
+              <FaInstagram size={20} />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-cavenetIndigo">
+              <FaTwitter size={20} />
+            </a>
+          </div>
         </div>
       </div>
 
