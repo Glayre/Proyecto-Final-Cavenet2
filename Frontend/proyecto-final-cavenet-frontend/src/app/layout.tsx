@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";   // ✅ Importación correcta
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { AuthProvider } from "../context/AuthContext";
+import "./globals.css";
+import Navbar from "../components/Navbar"; // 🔹 importa tu Navbar
 
 export const metadata: Metadata = {
-  title: "CAVENET",
-  description: "Internet de Alta Velocidad con CAVENET",
+  title: "CAVENET | Internet de Alta Velocidad",
+  description: "Planes de Internet para hogar y empresas desde $25 mensuales. Sin interrupciones.",
 };
 
 export default function RootLayout({
@@ -16,18 +14,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="font-sans bg-white text-cavDark antialiased">
-        {/* 🔹 Contexto de autenticación */}
-        <AuthProvider>
-          {/* 🔹 Navbar global */}
-          <Navbar />
+      <body className="bg-gray-50 text-gray-900">
+        {/* 🔹 Navbar fijo arriba */}
+        <Navbar />
 
-          {/* 🔹 Contenido dinámico */}
-          <main className="pt-20 min-h-screen">{children}</main>
+        {/* 🔹 Contenido principal */}
+        <main className="pt-20">{children}</main>
 
-          {/* 🔹 Footer global */}
-          <Footer />
-        </AuthProvider>
+        {/* 🔹 Footer opcional */}
+        <footer className="bg-cavenetBlue text-white text-center py-6 mt-12">
+          &copy; {new Date().getFullYear()} CAVENET. Todos los derechos reservados.
+        </footer>
       </body>
     </html>
   );
