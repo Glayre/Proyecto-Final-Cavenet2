@@ -12,12 +12,12 @@ interface Props {
 
 export default function UserProfile({ user }: Props) {
   return (
-    <div className="max-w-md mx-auto bg-white shadow-card rounded-xl p-6 space-y-4">
-      <h2 className="text-2xl font-bold text-cavenetBlue mb-4 text-center">
+    <div className="max-w-md mx-auto bg-(--background) shadow-cav rounded-xl p-6 space-y-4">
+      <h2 className="text-2xl font-bold text-(--cavenet-blue) mb-4 text-center">
         Perfil de Usuario
       </h2>
 
-      <div className="space-y-2 text-gray-700">
+      <div className="space-y-2 text-(--foreground)">
         <p>
           <span className="font-semibold">Nombre:</span> {user.nombre} {user.apellido}
         </p>
@@ -36,7 +36,7 @@ export default function UserProfile({ user }: Props) {
         )}
       </div>
 
-      <button className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition">
+      <button className="w-full py-2 rounded-lg transition-colors bg-(--cavenet-blue) text-white hover:bg-(--cavenet-indigo)">
         Editar Perfil
       </button>
     </div>

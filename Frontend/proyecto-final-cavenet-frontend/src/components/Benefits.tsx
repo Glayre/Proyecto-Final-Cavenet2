@@ -8,20 +8,22 @@ export default function Benefits() {
   ];
 
   return (
-    <section className="px-6 py-12 bg-white">
-      <h2 className="text-3xl font-bold text-center mb-8 text-cavenetBlue">
+    <section className="px-6 py-12 bg-(--background)">
+      <h2 className="text-3xl font-bold text-center mb-8 text-(--cavenet-blue)">
         ¿Por qué elegirnos?
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {items.map((item, i) => (
-          <div key={i} className="bg-cavGray rounded-xl p-6 text-center shadow-card hover:scale-105 transition-transform">
-            <div className="text-cavenetIndigo mb-4 flex justify-center">{item.icon}</div>
-            <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-            <p className="text-gray-600">{item.desc}</p>
+          <div
+            key={i}
+            className="bg-(--cav-gray) rounded-xl p-6 text-center shadow-cav hover:scale-105 transition-transform"
+          >
+            <div className="text-(--cavenet-indigo) mb-4 flex justify-center">{item.icon}</div>
+            <h3 className="text-xl font-semibold mb-2 text-(--cav-dark)">{item.title}</h3>
+            <p className="text-(--foreground)">{item.desc}</p>
           </div>
         ))}
       </div>
     </section>
   );
 }
-

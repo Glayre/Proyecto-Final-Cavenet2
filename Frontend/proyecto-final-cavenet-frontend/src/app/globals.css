@@ -1,8 +1,6 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
 
-/* 🔹 Variables globales inspiradas en 360NET */
 :root {
   --cavenet-blue: #004aad;   /* Azul corporativo */
   --cavenet-indigo: #3b82f6; /* Indigo para acentos */
@@ -19,11 +17,8 @@
   }
 }
 
-/* 🔹 Estilos base */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Inter, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }

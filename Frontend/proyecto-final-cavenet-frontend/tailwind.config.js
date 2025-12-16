@@ -1,21 +1,22 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+// tailwind.config.js
+export default {
   content: [
-    "./src/app/**/*.{js,ts,jsx,tsx}",
-    "./src/context/**/*.{js,ts,jsx,tsx}",
-    "./src/services/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}", // Escanea todos tus componentes
   ],
   theme: {
     extend: {
       colors: {
-        cavenetBlue: "#004aad",
-        cavenetIndigo: "#3b82f6",
-        cavGray: "#f5f5f5",
-        cavDark: "#1a1a1a",
+        cavGray: "#f5f5f5",   // Fondo claro
+        cavDark: "#333333",   // Texto principal
+        cavBlue: "#004AAD",   // Azul corporativo
+        cavAccent: "#FF6B00", // Naranja acento
       },
       fontFamily: {
-        sans: ["Inter", "Helvetica", "Arial", "sans-serif"],
+        sans: ["Inter", "sans-serif"],   // Fuente principal
+        brand: ["Poppins", "sans-serif"] // Fuente secundaria
+      },
+      boxShadow: {
+        cav: "0 4px 6px rgba(0,0,0,0.1)", // Sombra personalizada
       },
     },
   },

@@ -37,7 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 🔹 Función de login
   const login = async (email: string, password: string) => {
     try {
-      // Aquí conectas con tu backend (ejemplo: POST /api/auth/login)
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -48,7 +47,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const data = await response.json();
 
-      // Guardar token y usuario
       setToken(data.token);
       setUser(data.user);
 

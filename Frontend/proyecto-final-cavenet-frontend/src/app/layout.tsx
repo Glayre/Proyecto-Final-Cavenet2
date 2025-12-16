@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar"; // 🔹 importa tu Navbar
 
 export const metadata: Metadata = {
-  title: "CAVENET | Internet de Alta Velocidad",
+  title: "CAVENET",
   description: "Planes de Internet para hogar y empresas desde $25 mensuales. Sin interrupciones.",
 };
 

@@ -33,9 +33,9 @@ export default function PaymentForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-lg mx-auto bg-white shadow-card rounded-xl p-6 space-y-4"
+      className="max-w-lg mx-auto bg-(--background) shadow-cav rounded-xl p-6 space-y-4"
     >
-      <h2 className="text-2xl font-bold text-center mb-4 text-cavenetBlue">
+      <h2 className="text-2xl font-bold text-center mb-4 text-(--cavenet-blue)">
         Reportar Pago
       </h2>
 
@@ -45,7 +45,7 @@ export default function PaymentForm() {
         placeholder="Nombre completo"
         value={formData.nombre}
         onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-(--cavenet-indigo)"
         required
       />
 
@@ -55,7 +55,7 @@ export default function PaymentForm() {
         placeholder="Correo electrónico"
         value={formData.email}
         onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-(--cavenet-indigo)"
         required
       />
 
@@ -65,7 +65,7 @@ export default function PaymentForm() {
         placeholder="Referencia bancaria (últimos 6 dígitos)"
         value={formData.referencia}
         onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-(--cavenet-indigo)"
         required
       />
 
@@ -75,7 +75,7 @@ export default function PaymentForm() {
         placeholder="Monto del pago"
         value={formData.monto}
         onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-(--cavenet-indigo)"
         required
       />
 
@@ -85,7 +85,7 @@ export default function PaymentForm() {
         placeholder="Banco de origen"
         value={formData.bancoOrigen}
         onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-(--cavenet-indigo)"
       />
 
       <input
@@ -94,10 +94,10 @@ export default function PaymentForm() {
         placeholder="Cuenta destino"
         value={formData.cuentaDestino}
         onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+        className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-(--cavenet-indigo)"
       />
 
-      <button className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition">
+      <button className="w-full py-2 rounded-lg transition-colors bg-(--cavenet-blue) text-white hover:bg-(--cavenet-indigo)">
         Enviar reporte
       </button>
     </form>

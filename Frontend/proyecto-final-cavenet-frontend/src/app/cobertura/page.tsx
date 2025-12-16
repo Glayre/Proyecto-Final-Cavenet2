@@ -9,7 +9,7 @@ export default function CoberturaPage() {
         zonas de Aragua y pronto en más ciudades de Venezuela.
       </p>
       <div className="rounded-xl bg-white shadow-card p-6 text-center">
-        📍 Próximamente: Mapa interactivo de cobertura.
+        Mapa de cobertura y ubicaciones.
       </div>
     </main>
   );
