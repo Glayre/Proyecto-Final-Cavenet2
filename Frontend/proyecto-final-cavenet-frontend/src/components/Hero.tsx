@@ -1,32 +1,43 @@
+"use client";
+
 export default function Hero() {
   return (
     <section
-      className="min-h-screen flex flex-col justify-center items-center text-center bg-linear-to-r"
+      className="relative min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center"
       style={{
-        backgroundImage: "linear-gradient(to right, var(--cavenet-blue), var(--cavenet-indigo))",
+        backgroundImage: "url('fondopantalla.jpg')", // coloca aquí tu imagen exportada de Figma
         color: "var(--foreground)",
       }}
     >
-      {/* 🔹 Título principal */}
-      <h1 className="text-5xl font-bold mb-4">
-        Bienvenido a <span className="text-(--cavenet-indigo)">CAVENET</span>
-      </h1>
+      {/* 🔹 Overlay para oscurecer la imagen y mejorar contraste */}
+      <div className="absolute inset-0 bg-linear-to-r from-(--cavenet-blue)/70 to-(--cavenet-indigo)/70"></div>
 
-      {/* 🔹 Subtítulo */}
-      <p className="text-lg max-w-xl text-(--cav-gray)">
-        Conectando innovación y tecnología, inspirado en 360NET.
-      </p>
+      {/* 🔹 Contenido centrado */}
+      <div className="relative z-10 flex flex-col items-center">
+        <h1 className="text-5xl font-bold mb-4 text-white">
+          Prepárate para el internet <span className="text-(--cavenet-indigo)"></span>
+        </h1>
+        <h1 className="text-5xl font-bold mb-4 text-white">
+          de alta velocidad<span className="text-(--cavenet-indigo)"></span>
+        </h1>
+        <h3 className="text-5xl font-bold mb-4 text-white">
+          ¿Qué esperas para contratar Internet de Fibra Óptica?<span className="text-(--cavenet-indigo)"></span>
+        </h3>
 
-      {/* 🔹 Botón CTA */}
-      <button
-        className="mt-6 px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors hover:bg-(--cavenet-indigo)"
-        style={{
-          backgroundColor: "var(--cavenet-blue)",
-          color: "white",
-        }}
-      >
-        Explora nuestros planes
-      </button>
+        <h3 className="text-5xl font-bold mb-4 text-white">
+         !Navega a ULTRA ALTA VELOCIDAD!<span className="text-(--cavenet-indigo)"></span>
+        </h3>
+
+         <p className="text-lg max-w-xl text-(--cav-gray)">
+          Conectando innovación y tecnología, inspirado en 360NET.
+        </p>
+
+        <button
+          className="mt-6 px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors bg-(--cavenet-blue) hover:bg-(--cavenet-indigo) text-white"
+        >
+          Explora nuestros planes
+        </button>
+      </div>
     </section>
   );
 }

@@ -1,6 +1,8 @@
+/* Tailwind v4 */
 @import "tailwindcss/preflight";
 @tailwind utilities;
 
+/* 🔹 Variables globales inspiradas en CAVENET */
 :root {
   --cavenet-blue: #004aad;   /* Azul corporativo */
   --cavenet-indigo: #3b82f6; /* Indigo para acentos */
@@ -8,6 +10,10 @@
   --cav-dark: #1a1a1a;       /* Gris oscuro para textos */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Gradientes corporativos */
+  --gradient-blue: linear-gradient(to right, #004aad, #3b82f6);
+  --gradient-dark: linear-gradient(to right, #1a1a1a, #004aad);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,8 +23,118 @@
   }
 }
 
+/* 🔹 Estilos base */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Inter, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 🔹 Tipografía global */
+h1, .title-xl {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: 700;   /* font-bold */
+  color: var(--cavenet-blue);
+  margin-bottom: 1.5rem;
+}
+h2, .title-lg {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 600;    /* font-semibold */
+  color: var(--cavenet-blue);
+  margin-bottom: 1rem;
+}
+h3, .title-md {
+  font-size: 1.5rem;   /* text-2xl */
+  font-weight: 600;    /* font-semibold */
+  color: var(--cavenet-indigo);
+  margin-bottom: 0.75rem;
+}
+p {
+  font-size: 1rem;     /* text-base */
+  line-height: 1.625;  /* leading-relaxed */
+  color: var(--foreground);
+}
+
+/* 🔹 Botones */
+.btn-primary {
+  background-color: var(--cavenet-blue);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s;
+}
+.btn-primary:hover {
+  background-color: var(--cavenet-indigo);
+}
+
+.btn-secondary {
+  background-color: var(--cavenet-indigo);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s;
+}
+.btn-secondary:hover {
+  background-color: var(--cavenet-blue);
+}
+
+.btn-outline {
+  border: 1px solid var(--cavenet-blue);
+  color: var(--cavenet-blue);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
+.btn-outline:hover {
+  background-color: var(--cavenet-blue);
+  color: white;
+}
+
+/* 🔹 Tarjetas */
+.card {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+.card-dark {
+  background-color: var(--cav-dark);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+/* 🔹 Secciones */
+.section {
+  padding: 3rem 1.5rem;
+}
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--cavenet-blue);
+}
+
+/* 🔹 Utilidades extra */
+.shadow-card {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+}
+.text-gradient {
+  background: var(--gradient-blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bg-gradient-blue {
+  background: var(--gradient-blue);
+}
+.bg-gradient-dark {
+  background: var(--gradient-dark);
 }

@@ -68,7 +68,7 @@ export default function Home() {
       <Benefits />
 
       {/* 🔹 CTA final */}
-      <section className="bg-gradient-to-r from-cavenetBlue to-cavenetIndigo text-white text-center py-16 px-6">
+      <section className="bg-linear-to-r from-cavenetBlue to-cavenetIndigo text-white text-center py-16 px-6">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
           ¿Listo para navegar a máxima velocidad?
         </h2>

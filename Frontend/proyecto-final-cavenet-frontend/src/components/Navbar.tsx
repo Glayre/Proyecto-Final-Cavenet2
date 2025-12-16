@@ -1,115 +1,79 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaUser } from "react-icons/fa";
+import { MdLiveTv } from "react-icons/md";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-
   return (
     <nav
       className="fixed top-0 w-full shadow-md z-50"
       style={{ backgroundColor: "var(--cavenet-blue)", color: "white" }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         {/* 🔹 Logo */}
         <Link href="/" className="flex items-center">
           <Image
             src="/logocavenet1.png"
             alt="CAVENET Logo"
-            width={180}
-            height={60}
+            width={150}
+            height={50}
             priority
-            className="w-auto h-auto max-h-12 md:max-h-16"
+            className="w-auto h-auto max-h-10 md:max-h-12"
           />
         </Link>
 
-        {/* 🔹 Menú desktop */}
-        <ul className="hidden md:flex gap-6 font-medium">
-          <li>
-            <Link href="/" className="transition-colors hover:text-(--cavenet-indigo)">
-              Inicio
-            </Link>
-          </li>
-          <li>
-            <Link href="/cobertura" className="transition-colors hover:text-(--cavenet-indigo)">
-              Cobertura
-            </Link>
-          </li>
-          <li>
-            <Link href="/planes" className="transition-colors hover:text-(--cavenet-indigo)">
-              Planes
-            </Link>
-          </li>
-          <li>
-            <Link href="/nosotros" className="transition-colors hover:text-(--cavenet-indigo)">
-              Nosotros
-            </Link>
-          </li>
-          <li>
-            <Link href="/contacto" className="transition-colors hover:text-(--cavenet-indigo)">
-              Contacto
-            </Link>
-          </li>
-          <li>
-            <Link href="/mi-cuenta" className="transition-colors hover:text-(--cavenet-indigo)">
-              Pagos
-            </Link>
-          </li>
-        </ul>
-
-        {/* 🔹 Botón menú móvil */}
-        <button
-          onClick={toggleMenu}
-          className="md:hidden focus:outline-none"
-        >
-          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
-      </div>
-
-      {/* 🔹 Menú móvil */}
-      {isOpen && (
-        <div
-          className="md:hidden px-6 pb-6 transition-all duration-300 ease-in-out"
-          style={{ backgroundColor: "var(--cavenet-blue)" }}
-        >
-          <ul className="flex flex-col gap-4 font-medium">
+        {/* 🔹 Menú principal centrado con espacio entre palabras */}
+        <div className="flex items-center justify-center w-full ml-6">
+          <ul className="flex justify-center font-semibold uppercase tracking-widest gap-6 sm:gap-10 lg:gap-16">
             <li>
-              <Link href="/" onClick={toggleMenu} className="hover:text-(--cavenet-indigo)">
-                Inicio
-              </Link>
+              <Link href="/" className="hover:text-(--cavenet-indigo)">Inicio</Link>
             </li>
             <li>
-              <Link href="/cobertura" onClick={toggleMenu} className="hover:text-(--cavenet-indigo)">
-                Cobertura
-              </Link>
+              <Link href="/cobertura" className="hover:text-(--cavenet-indigo)">Cobertura</Link>
             </li>
             <li>
-              <Link href="/planes" onClick={toggleMenu} className="hover:text-(--cavenet-indigo)">
-                Planes
-              </Link>
+              <Link href="/contratar" className="hover:text-(--cavenet-indigo)">Contratar</Link>
             </li>
             <li>
-              <Link href="/nosotros" onClick={toggleMenu} className="hover:text-(--cavenet-indigo)">
-                Nosotros
-              </Link>
+              <Link href="/planes" className="hover:text-(--cavenet-indigo)">Planes</Link>
             </li>
             <li>
-              <Link href="/contacto" onClick={toggleMenu} className="hover:text-(--cavenet-indigo)">
-                Contacto
-              </Link>
+              <Link href="/reporte-pago" className="hover:text-(--cavenet-indigo)">Reporta tu pago</Link>
             </li>
             <li>
-              <Link href="/mi-cuenta" onClick={toggleMenu} className="hover:text-(--cavenet-indigo)">
-                Pagos
-              </Link>
+              <Link href="/contacto" className="hover:text-(--cavenet-indigo)">Contacto</Link>
+            </li>
+            <li>
+              <Link href="/mi-cuenta" className="hover:text-(--cavenet-indigo)">Mi cuenta</Link>
             </li>
           </ul>
         </div>
-      )}
+
+        {/* 🔹 Íconos sociales alineados a la derecha */}
+        <div className="flex gap-4 ml-6">
+          <Link href="/tv" className="hover:text-(--cavenet-indigo)">
+            <MdLiveTv size={20} />
+          </Link>
+          <Link href="/mi-cuenta" className="hover:text-(--cavenet-indigo)">
+            <FaUser size={20} />
+          </Link>
+          <Link
+            href="https://instagram.com"
+            target="_blank"
+            className="hover:text-(--cavenet-indigo)"
+          >
+            <FaInstagram size={20} />
+          </Link>
+          <Link
+            href="https://wa.me/00000000000"
+            target="_blank"
+            className="hover:text-(--cavenet-indigo)"
+          >
+            <FaWhatsapp size={20} />
+          </Link>
+        </div>
+      </div>
     </nav>
   );
 }
