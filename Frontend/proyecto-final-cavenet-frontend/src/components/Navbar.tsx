@@ -25,7 +25,7 @@ export default function Navbar() {
 
         {/* 🔹 Menú principal centrado con espacio entre palabras */}
         <div className="flex items-center justify-center w-full ml-6">
-          <ul className="flex justify-center font-semibold uppercase tracking-widest gap-6 sm:gap-10 lg:gap-16">
+          <ul className="flex justify-center font-semibold uppercase tracking-widest gap-12 sm:gap-16 lg:gap-20">
             <li>
               <Link href="/" className="hover:text-(--cavenet-indigo)">Inicio</Link>
             </li>
