@@ -20,16 +20,12 @@ export default function Hero() {
         <h1 className="text-5xl font-bold mb-4 text-white">
           de alta velocidad<span className="text-(--cavenet-indigo)"></span>
         </h1>
-        <h3 className="text-5xl font-bold mb-4 text-white">
-          ¿Qué esperas para contratar Internet de Fibra Óptica?<span className="text-(--cavenet-indigo)"></span>
-        </h3>
-
-        <h3 className="text-5xl font-bold mb-4 text-white">
-         !Navega a ULTRA ALTA VELOCIDAD!<span className="text-(--cavenet-indigo)"></span>
-        </h3>
-
+        
+        <p className="text-lg max-w-xl text-(--cav-gray)">
+          ¿Qué esperas para contratar Internet de Fibra Óptica?
+        </p>
          <p className="text-lg max-w-xl text-(--cav-gray)">
-          Conectando innovación y tecnología, inspirado en 360NET.
+          !Navega a ULTRA ALTA VELOCIDAD!
         </p>
 
         <button
