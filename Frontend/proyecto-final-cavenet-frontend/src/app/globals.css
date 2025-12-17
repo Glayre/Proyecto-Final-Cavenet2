@@ -1,19 +1,23 @@
 /* Tailwind v4 */
 @import "tailwindcss/preflight";
 @tailwind utilities;
+@tailwind components;
+@tailwind base;
+
+@import "tailwindcss" source("../../src");
 
 /* 🔹 Variables globales inspiradas en CAVENET */
-:root {
-  --cavenet-blue: #004aad;   /* Azul corporativo */
-  --cavenet-indigo: #3b82f6; /* Indigo para acentos */
-  --cav-gray: #f5f5f5;       /* Gris claro para fondos */
-  --cav-dark: #1a1a1a;       /* Gris oscuro para textos */
+@theme {
+  --color-cavenetBlue: #004aad;   /* Azul corporativo */
+  --color-cavenetIndigo: #3b82f6; /* Indigo para acentos */
+  --color-cavGray: #f5f5f5;       /* Gris claro para fondos */
+  --color-cavDark: #1a1a1a;       /* Gris oscuro para textos */
   --background: #ffffff;
   --foreground: #171717;
 
   /* Gradientes corporativos */
-  --gradient-blue: linear-gradient(to right, #004aad, #3b82f6);
-  --gradient-dark: linear-gradient(to right, #1a1a1a, #004aad);
+  --color-gradientBlue: linear-gradient(to right, #004aad, #3b82f6);
+  --color-gradientDark: linear-gradient(to right, #1a1a1a, #004aad);
 }
 
 @media (prefers-color-scheme: dark) {

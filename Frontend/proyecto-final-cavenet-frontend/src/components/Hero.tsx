@@ -1,10 +1,11 @@
 "use client";
+"use client";
 import Image from "next/image";
 
 export default function Hero() {
   return (
     // 🔹 Aquí ajustas el espacio superior con pt-*
-    <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 pt-96">
+    <section className="min-h-screen grid grid-cols-1">
       {/* 🔹 Mitad izquierda: fondo con texto */}
       <div
         className="relative flex flex-col justify-center items-center text-center bg-cover bg-center"
@@ -14,22 +15,22 @@ export default function Hero() {
         }}
       >
         {/* Overlay para contraste */}
-        <div className="absolute inset-0 bg-linear-to-r from-(--cavenet-blue)/70 to-(--cavenet-indigo)/70"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-cavenetBlue/70 to-cavenetIndigo/70"></div>
 
         {/* Contenido */}
-<div className="relative z-10 px-4 mt-22">
+<div className="relative z-10 px-4 mt-20 h-[70vh] flex flex-col justify-center items-center">
   <h1 className="text-5xl font-bold mb-0 text-white">
     Prepárate para el internet{" "}
-    <span className="text-(--cavenet-indigo)"></span>
+    <span className="text-cavenetIndigo"></span>
   </h1>
   <h1 className="text-5xl font-bold mb-0 text-white">
     de alta velocidad
-    <span className="text-(--cavenet-indigo)"></span>
+    <span className="text-cavenetIndigo"></span>
   </h1>
-  <p className="text-lg max-w-xl text-(--cav-gray)">
+  <p className="text-lg max-w-xl text-cavGray">
     ¿Qué esperas para contratar Internet de Fibra Óptica?
   </p>
-  <p className="text-lg max-w-xl text-(--cav-gray)">
+  <p className="text-lg max-w-xl text-cavGray">
     ¡Navega a ULTRA ALTA VELOCIDAD!
   </p>
 </div>
@@ -46,10 +47,10 @@ export default function Hero() {
             height={169}
             className="rounded-lg shadow-md mb-2"
           />
-          <h2 className="text-base font-bold text-(--cavenet-blue)">
+          <h2 className="text-base font-bold text-cavenetBlue">
             Televisión HD
           </h2>
-          <p className="text-sm text-(--foreground) leading-snug">
+          <p className="text-sm text-foreground leading-snug">
             Más de 100 canales en vivo y en alta definición.
           </p>
         </div>

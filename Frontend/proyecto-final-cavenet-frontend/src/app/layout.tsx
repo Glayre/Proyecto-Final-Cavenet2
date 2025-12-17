@@ -19,7 +19,7 @@ export default function RootLayout({
         <Navbar />
 
         {/* 🔹 Contenido principal */}
-        <main className="pt-20">{children}</main>
+        <main className="pt-16">{children}</main>
 
         {/* 🔹 Footer opcional */}
         <footer className="bg-cavenetBlue text-white text-center py-6 mt-12">
