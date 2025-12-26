@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { AuthProvider } from "../context/AuthContext"; // 🔹 importa tu AuthProvider
+import { AuthProvider } from "../context/AuthContext"; // importa tu AuthProvider
 
 export const metadata: Metadata = {
   title: "CAVENET",
-  description: "Planes de Internet para hogar y empresas desde $25 mensuales. Sin interrupciones.",
+  description:
+    "Planes de Internet para hogar y empresas desde $25 mensuales. Sin interrupciones.",
 };
 
 export default function RootLayout({
@@ -15,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className="bg-gray-50 text-gray-900">
+    <html lang="es" className="bg-gray-50 text-gray-900">
+      <body>
         <AuthProvider>
           {/* 🔹 Navbar fijo arriba */}
           <Navbar />

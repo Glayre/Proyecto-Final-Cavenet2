@@ -2,53 +2,53 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
-// 🔹 Tipo de usuario
 interface User {
   id: string;
   nombre: string;
   email: string;
 }
 
-// 🔹 Tipo del contexto
 interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean;
 }
 
-// 🔹 Contexto
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// 🔹 Provider
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
-  // Cargar token desde localStorage al iniciar
   useEffect(() => {
     const savedToken = localStorage.getItem("authToken");
     const savedUser = localStorage.getItem("authUser");
     if (savedToken && savedUser) {
       setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch {
+        localStorage.removeItem("authUser"); // limpiar si está corrupto
+      }
     }
   }, []);
 
-  // 🔹 Función de login
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch("http://localhost:4000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) throw new Error("Error en login");
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error en login");
+      }
 
       setToken(data.token);
       setUser(data.user);
@@ -63,7 +63,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // 🔹 Función de logout
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -73,15 +72,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider 
-    value={{ user, token, login, logout, isAuthenticated: !!token }}
+    <AuthContext.Provider
+      value={{ user, token, login, logout, isAuthenticated: !!token }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
 
-// 🔹 Hook para usar el contexto
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

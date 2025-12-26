@@ -9,24 +9,28 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setError(null);
+    e.preventDefault();
+    setError(null);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/login", {
+      // ✅ Ajuste: ruta correcta del backend
+      const res = await fetch("http://localhost:4000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) throw new Error("Credenciales inválidas");
-
       const data = await res.json();
 
-      // 🔹 Guardar token en localStorage
-      localStorage.setItem("token", data.token);
+      if (!res.ok) {
+        throw new Error(data.error || "Credenciales inválidas");
+      }
 
-      // 🔹 Redirigir a /mi-cuenta
+      // ✅ Guardar token y usuario en localStorage con nombres consistentes
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authUser", JSON.stringify(data.user));
+
+      // ✅ Redirigir a /mi-cuenta
       router.push("/mi-cuenta");
     } catch (err) {
       if (err instanceof Error) {
@@ -37,7 +41,6 @@ export default function LoginPage() {
     }
   };
 
-
   return (
     <main className="px-6 py-12">
       <h1 className="text-3xl font-bold text-center mb-6 text-cavenetBlue">
@@ -45,8 +48,9 @@ export default function LoginPage() {
       </h1>
 
       <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto bg-white shadow-lg rounded-xl p-6 space-y-4">
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto bg-white shadow-lg rounded-xl p-6 space-y-4"
+      >
         {/* 🔹 Correo */}
         <input
           type="email"
@@ -66,9 +70,10 @@ export default function LoginPage() {
         />
 
         {/* 🔹 Botón */}
-        <button 
-        type="submit"
-        className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition">
+        <button
+          type="submit"
+          className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition"
+        >
           Ingresar
         </button>
       </form>
@@ -86,6 +91,13 @@ export default function LoginPage() {
           Recuperar acceso
         </a>
       </p>
+
+      {/* 🔹 Mostrar error si existe */}
+      {error && (
+        <p className="text-center text-red-600 mt-4">
+          {error}
+        </p>
+      )}
     </main>
   );
 }
