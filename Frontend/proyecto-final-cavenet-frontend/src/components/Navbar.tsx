@@ -3,18 +3,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaInstagram, FaWhatsapp, FaUser } from "react-icons/fa";
 import { MdLiveTv } from "react-icons/md";
+import { HiMenu } from "react-icons/hi"; // ✅ NUEVO: importamos el ícono de menú hamburguesa
 import { useState } from "react";
 
 const Elemento = ({ href, text }: { href: string; text: string }) => {
   return (
-                <li>
-                <Link href={href} className="hover:text-cavenetBlue p-2 rounded hover:bg-cavenetIndigo transition">{text}</Link>
-              </li>
+    <li>
+      <Link
+        href={href}
+        className="hover:text-cavenetBlue p-2 rounded hover:bg-cavenetIndigo transition"
+      >
+        {text}
+      </Link>
+    </li>
   );
 };
-
-
-
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,10 +45,12 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* 🔹 Menú principal centrado con espacio entre palabras */}
+        {/* 🔹 Menú principal */}
         <div className="flex items-center justify-center w-full ml-6 relative">
           <ul className="flex">
-            <div className={`${menu} absolute top-10 left-[-180px] flex-col lg:flex-row bg-cavenetBlue p-4 lg:static lg:flex justify-center items-start lg:items-center font-semibold uppercase tracking-widest gap-12 lg:gap-8 xl:gap-10 text-sm`}>
+            <div
+              className={`${menu} absolute top-10 left-[-180px] flex-col lg:flex-row bg-cavenetBlue p-4 lg:static lg:flex justify-center items-start lg:items-center font-semibold uppercase tracking-widest gap-12 lg:gap-8 xl:gap-10 text-sm`}
+            >
               <Elemento href="/" text="Inicio" />
               <Elemento href="/cobertura" text="Cobertura" />
               <Elemento href="/contratar" text="Contratar" />
@@ -57,7 +62,7 @@ export default function Navbar() {
           </ul>
         </div>
 
-        {/* 🔹 Íconos sociales alineados a la derecha */}
+        {/* 🔹 Íconos sociales */}
         <div className="flex gap-4 ml-6">
           <Link href="/tv" className="hover:text-cavenetIndigo">
             <MdLiveTv size={20} />
@@ -79,8 +84,13 @@ export default function Navbar() {
           >
             <FaWhatsapp size={20} />
           </Link>
-          <button onClick={ () => toggleMenu()} className="bg-white text-cavenetBlue p-1 rounded-lg font-semibold shadow-lg hover:bg-gray-200 transition p-0 text-sm lg:hidden cursor-pointer">
-           <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round"></path> <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round"></path> <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+
+          {/* ✅ AJUSTE: botón de menú usando react-icons en lugar de SVG manual */}
+          <button
+            onClick={toggleMenu}
+            className="bg-white text-cavenetBlue p-2 rounded-lg shadow-lg hover:bg-gray-200 transition lg:hidden cursor-pointer"
+          >
+            <HiMenu size={24} />
           </button>
         </div>
       </div>

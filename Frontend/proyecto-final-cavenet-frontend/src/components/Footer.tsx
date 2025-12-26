@@ -1,6 +1,14 @@
+"use client"; // 🔹 convierte el componente en Client Component import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
-export default function Footer() {
+export default function Footer() 
+  { const [year, setYear] = useState<number | null>(null);
+    
+    useEffect(() => 
+      { setYear(new Date().getFullYear()); 
+    }, []);
+
   return (
     <footer
       className="px-6 py-10 mt-12"
@@ -68,7 +76,7 @@ export default function Footer() {
 
       {/* 🔹 Derechos reservados */}
       <div className="mt-10 border-t border-white/20 pt-6 text-center text-xs">
-        © {new Date().getFullYear()} CAVENET. Todos los derechos reservados.
+        © {year ?? ""} CAVENET. Todos los derechos reservados.
       </div>
     </footer>
   );

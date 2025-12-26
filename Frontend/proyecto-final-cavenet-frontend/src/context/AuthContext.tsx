@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 // 🔹 Tipo de usuario
 interface User {
@@ -14,6 +15,7 @@ interface AuthContextType {
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  isAuthenticated?: boolean;
 }
 
 // 🔹 Contexto
@@ -23,6 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const router = useRouter();
 
   // Cargar token desde localStorage al iniciar
   useEffect(() => {
@@ -37,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 🔹 Función de login
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -52,6 +55,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("authUser", JSON.stringify(data.user));
+
+      router.push("/mi-cuenta");
     } catch (error) {
       console.error("Login fallido:", error);
       throw error;
@@ -64,10 +69,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     localStorage.removeItem("authToken");
     localStorage.removeItem("authUser");
+    router.push("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider 
+    value={{ user, token, login, logout, isAuthenticated: !!token }}
+    >
       {children}
     </AuthContext.Provider>
   );

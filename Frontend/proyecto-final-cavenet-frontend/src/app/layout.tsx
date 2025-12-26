@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "../components/Navbar"; // 🔹 importa tu Navbar
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { AuthProvider } from "../context/AuthContext"; // 🔹 importa tu AuthProvider
 
 export const metadata: Metadata = {
   title: "CAVENET",
@@ -15,16 +17,16 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="bg-gray-50 text-gray-900">
-        {/* 🔹 Navbar fijo arriba */}
-        <Navbar />
+        <AuthProvider>
+          {/* 🔹 Navbar fijo arriba */}
+          <Navbar />
 
-        {/* 🔹 Contenido principal */}
-        <main className="pt-16">{children}</main>
+          {/* 🔹 Contenido principal */}
+          <main className="pt-16">{children}</main>
 
-        {/* 🔹 Footer opcional */}
-        <footer className="bg-cavenetBlue text-white text-center py-6 mt-12">
-          &copy; {new Date().getFullYear()} CAVENET. Todos los derechos reservados.
-        </footer>
+          {/* 🔹 Footer dinámico */}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
