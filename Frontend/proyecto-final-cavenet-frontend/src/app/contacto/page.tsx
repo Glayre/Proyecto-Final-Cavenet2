@@ -1,29 +1,39 @@
 export default function ContactoPage() {
   return (
-    <main className="px-6 py-12">
-      <h1 className="text-3xl font-bold text-center mb-6 text-cavenetBlue">
-        Contáctanos
-      </h1>
-      <form className="max-w-lg mx-auto bg-white shadow-card rounded-xl p-6 space-y-4">
+    <main className="flex w-full h-[596px] px-6 py-12 gap-12">
+      {/* 🔹 Mapa a la izquierda */}
+      <div
+        className="w-[935px] h-full bg-cover bg-center rounded-xl shadow-md"
+        style={{ backgroundImage: "url('/mapacontacto.png')" }}
+      />
+
+      {/* 🔹 Formulario a la derecha */}
+      <div className="flex flex-col justify-start items-start w-[405px]">
+        <h1 className="text-[35px] font-light mb-6 text-cavenetBlue">
+          Contáctanos
+        </h1>
+
+        <label className="text-[25px] font-light text-black mb-2">Nombre</label>
         <input
           type="text"
-          placeholder="Nombre"
-          className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+          className="w-full h-[51px] mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
         />
+
+        <label className="text-[25px] font-light text-black mb-2">Correo electrónico</label>
         <input
           type="email"
-          placeholder="Correo electrónico"
-          className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+          className="w-full h-[51px] mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
         />
+
+        <label className="text-[25px] font-light text-black mb-2">Mensaje</label>
         <textarea
-          placeholder="Mensaje"
-          className="w-full border rounded-lg px-4 py-2 h-32 focus:ring-2 focus:ring-cavenetIndigo"
+          className="w-full h-[208px] mb-6 px-4 py-2 bg-white/60 border border-[#2041E3] rounded-md resize-none"
         />
-        <button className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition">
-          Enviar
+
+        <button className="w-[231px] h-[48px] bg-[#2041E3] text-white font-bold text-[20px] rounded-md hover:bg-[#1a36b0] transition self-center">
+        ENVIAR
         </button>
-      </form>
+      </div>
     </main>
   );
 }
-

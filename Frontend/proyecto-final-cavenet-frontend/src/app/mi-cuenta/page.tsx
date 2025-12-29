@@ -11,34 +11,93 @@ export default function MiCuentaPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
+    const user = localStorage.getItem("authUser");
+    const datos = user ? JSON.parse(user) : null;
 
     if (!token) {
       router.push("/login"); // 🔹 Redirige si no hay token
       return;
     }
 
-    // ✅ Usamos apiFetch en lugar de fetch directo
-    apiFetch("/api/invoices", { method: "GET" })
+    if (!datos?._id) {
+      setError("No se encontró el usuario en localStorage");
+      return;
+    }
+
+    apiFetch("/api/invoices/" + datos._id, { method: "GET" })
       .then((data) => setFacturas(data))
       .catch((err) => setError(err.message));
   }, [router]);
 
+  // 🔹 Calcular totales de facturas pendientes/vencidas
+  const facturasPendientes = facturas.filter(
+    (f) => f.estado === "Pendiente" || f.estado === "Vencida"
+  );
+
+  const totalUSD = facturasPendientes.reduce(
+    (sum, f) => sum + (f.montoUSD || 0),
+    0
+  );
+
+  const totalBs = facturasPendientes.reduce(
+    (sum, f) => sum + parseFloat(f.montoBs || 0),
+    0
+  );
+
   return (
     <main className="px-6 py-12">
-      <h1 className="text-3xl font-bold text-center mb-6 text-cavenetBlue">
-        Mi Cuenta
-      </h1>
+      {/* 🔹 Título principal usando estilos globales */}
+      <h1 className="title-xl text-center">Mi Cuenta</h1>
 
       {error ? (
-        <p className="text-center text-red-500">{error}</p>
+        <p className="text-center text-red-500 w-full">{error}</p>
       ) : (
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-6 text-cavenetBlue">
-            Mis Facturas
-          </h2>
-          <InvoiceTable invoices={facturas} />
+          {/* 🔹 Subtítulo */}
+          <h2 className="title-lg mb-6">Mis Facturas</h2>
+
+          {/* 🔹 Aviso corporativo */}
+          <div className="card shadow-card mb-8">
+            <h3 className="title-md mb-2">Aviso</h3>
+            <p>
+              Recuerda que las facturas pendientes deben ser pagadas antes del día 10 de cada mes.
+            </p>
+          </div>
+
+          {/* 🔹 Resumen de estado de cuenta */}
+          <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="card shadow-card">
+              <h3 className="title-md mb-2">Saldo a favor</h3>
+              <p className="text-green-600 text-xl font-semibold">Bs. 0,00</p>
+            </div>
+            <div className="card shadow-card">
+              <h3 className="title-md mb-2">Monto a pagar</h3>
+              <p className="text-blue-600 text-xl font-semibold">
+                VED Bs.{" "}
+                {totalBs.toLocaleString("es-VE", { minimumFractionDigits: 2 })}
+              </p>
+              <p className="text-gray-700 text-lg font-medium">
+                USD $ {totalUSD.toFixed(2)}
+              </p>
+            </div>
+          </div>
+
+          {/* 🔹 Botón de acción global */}
+          <div className="text-center mb-8">
+            <button className="btn-primary">Pagar ahora</button>
+          </div>
+
+          {/* 🔹 Tabla de facturas */}
+          {facturas.length === 0 ? (
+            <p className="text-center text-gray-500">
+              No tienes facturas registradas.
+            </p>
+          ) : (
+            <InvoiceTable invoices={facturas} />
+          )}
         </div>
       )}
     </main>
   );
 }
+

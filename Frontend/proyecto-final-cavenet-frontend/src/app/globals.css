@@ -18,6 +18,14 @@
   /* Gradientes corporativos */
   --color-gradientBlue: linear-gradient(to right, #004aad, #3b82f6);
   --color-gradientDark: linear-gradient(to right, #1a1a1a, #004aad);
+
+  /* ✅ NUEVO: Estados de facturas */
+  --color-success-bg: #c6f6d5;   /* Verde claro */
+  --color-success-text: #22543d; /* Verde oscuro */
+  --color-error-bg: #fed7d7;     /* Rojo claro */
+  --color-error-text: #742a2a;   /* Rojo oscuro */
+  --color-warning-bg: #feebc8;   /* Amarillo claro */
+  --color-warning-text: #9c4221; /* Amarillo oscuro */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -142,3 +150,28 @@ p {
 .bg-gradient-dark {
   background: var(--gradient-dark);
 }
+
+/* ✅ NUEVO: Clases utilitarias para estados de facturas */
+.estado-pagada {
+  background-color: var(--color-error-bg);   /* fondo rosado */
+  color: var(--color-error-text);            /* letra roja */
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.estado-pendiente {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.estado-vencida {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+

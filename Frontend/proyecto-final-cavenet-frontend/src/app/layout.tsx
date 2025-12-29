@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { AuthProvider } from "../context/AuthContext"; // importa tu AuthProvider
+import { AuthProvider } from "../context/AuthContext";
 
 export const metadata: Metadata = {
   title: "CAVENET",
@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="bg-gray-50 text-gray-900">
-      <body>
+    <html lang="es">
+      <body className="bg-gray-50 text-gray-900">
         <AuthProvider>
           {/* 🔹 Navbar fijo arriba */}
           <Navbar />
