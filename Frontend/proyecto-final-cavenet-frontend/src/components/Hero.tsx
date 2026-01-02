@@ -1,10 +1,8 @@
 "use client";
-"use client";
 import Image from "next/image";
 
 export default function Hero() {
   return (
-    // 🔹 Aquí ajustas el espacio superior con pt-*
     <section className="min-h-screen grid grid-cols-1">
       {/* 🔹 Mitad izquierda: fondo con texto */}
       <div
@@ -15,25 +13,25 @@ export default function Hero() {
         }}
       >
         {/* Overlay para contraste */}
-        <div className="absolute inset-0 bg-linear-to-r from-cavenetBlue/70 to-cavenetIndigo/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-cavenetBlue)]/70 to-[var(--color-cavenetIndigo)]/70"></div>
 
         {/* Contenido */}
-<div className="relative z-10 px-4 mt-20 h-[70vh] flex flex-col justify-center items-center">
-  <h1 className="text-5xl font-bold mb-0 text-white">
-    Prepárate para el internet{" "}
-    <span className="text-cavenetIndigo"></span>
-  </h1>
-  <h1 className="text-5xl font-bold mb-0 text-white">
-    de alta velocidad
-    <span className="text-cavenetIndigo"></span>
-  </h1>
-  <p className="text-lg max-w-xl text-cavGray">
-    ¿Qué esperas para contratar Internet de Fibra Óptica?
-  </p>
-  <p className="text-lg max-w-xl text-cavGray">
-    ¡Navega a ULTRA ALTA VELOCIDAD!
-  </p>
-</div>
+        <div className="relative z-10 px-4 mt-20 h-[70vh] flex flex-col justify-center items-center">
+          <h1 className="text-5xl font-bold mb-0 text-white">
+            Prepárate para el internet{" "}
+            <span className="text-[var(--color-cavenetIndigo)]"></span>
+          </h1>
+          <h1 className="text-5xl font-bold mb-0 text-white">
+            de alta velocidad
+            <span className="text-[var(--color-cavenetIndigo)]"></span>
+          </h1>
+          <p className="text-lg max-w-xl text-[var(--color-cavGray)]">
+            ¿Qué esperas para contratar Internet de Fibra Óptica?
+          </p>
+          <p className="text-lg max-w-xl text-[var(--color-cavGray)]">
+            ¡Navega a ULTRA ALTA VELOCIDAD!
+          </p>
+        </div>
       </div>
 
       {/* 🔹 Mitad derecha: 3 tarjetas en línea */}
@@ -47,10 +45,10 @@ export default function Hero() {
             height={169}
             className="rounded-lg shadow-md mb-2"
           />
-          <h2 className="text-base font-bold text-cavenetBlue">
+          <h2 className="text-base font-bold text-[var(--color-cavenetBlue)]">
             Televisión HD
           </h2>
-          <p className="text-sm text-foreground leading-snug">
+          <p className="text-sm text-[var(--foreground)] leading-snug">
             Más de 100 canales en vivo y en alta definición.
           </p>
         </div>
@@ -64,10 +62,10 @@ export default function Hero() {
             height={169}
             className="rounded-lg shadow-md mb-2"
           />
-          <h2 className="text-base font-bold text-(--cavenet-blue)">
+          <h2 className="text-base font-bold text-[var(--color-cavenetBlue)]">
             Hasta 10 Gbps
           </h2>
-          <p className="text-sm text-(--foreground) leading-snug">
+          <p className="text-sm text-[var(--foreground)] leading-snug">
             Red MPLS para transmisión de datos de alta capacidad.
           </p>
         </div>
@@ -81,10 +79,10 @@ export default function Hero() {
             height={169}
             className="rounded-lg shadow-md mb-2"
           />
-          <h2 className="text-base font-bold text-(--cavenet-blue)">
+          <h2 className="text-base font-bold text-[var(--color-cavenetBlue)]">
             Sin interrupciones
           </h2>
-          <p className="text-sm text-(--foreground) leading-snug">
+          <p className="text-sm text-[var(--foreground)] leading-snug">
             Streaming y juegos sin límite ni caídas.
           </p>
         </div>
