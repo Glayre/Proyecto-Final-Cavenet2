@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind base;
 
-@import "tailwindcss" source("../../src");
+@import "tailwindcss" source("../../src/");
 
 /* 🔹 Variables globales inspiradas en CAVENET */
 @theme {
@@ -37,8 +37,6 @@
 
 /* 🔹 Estilos base */
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Inter, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,13 +64,12 @@ h3, .title-md {
 p {
   font-size: 1rem;     /* text-base */
   line-height: 1.625;  /* leading-relaxed */
-  color: var(--foreground);
 }
 
 /* 🔹 Botones */
 .btn-primary {
   background-color: var(--cavenet-blue);
-  color: white;
+  
   font-weight: 600;
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
@@ -84,7 +81,7 @@ p {
 
 .btn-secondary {
   background-color: var(--cavenet-indigo);
-  color: white;
+  
   font-weight: 600;
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
@@ -103,19 +100,18 @@ p {
 }
 .btn-outline:hover {
   background-color: var(--cavenet-blue);
-  color: white;
+  ;
 }
 
 /* 🔹 Tarjetas */
 .card {
-  background-color: white;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   border-radius: 0.5rem;
   padding: 1.5rem;
 }
 .card-dark {
   background-color: var(--cav-dark);
-  color: white;
+  
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   border-radius: 0.5rem;
   padding: 1.5rem;
@@ -174,4 +170,5 @@ p {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
 }
+
 

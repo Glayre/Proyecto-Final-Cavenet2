@@ -33,7 +33,7 @@ export default function InvoiceTable({ invoices }: Props) {
             <th className="px-4 py-2 text-left">Estado</th>
             <th className="px-4 py-2 text-left">Detalle</th>
             <th className="px-4 py-2 text-left">Aviso</th>
-            <th className="px-4 py-2 text-left">Pagar</th>
+            <th className="px-4 py-2 text-left">Estado</th>
           </tr>
         </thead>
         <tbody>

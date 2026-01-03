@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import InvoiceTable from "../../components/InvoiceTable";
+import UserNav from "@/components/UserNav";
 
 export default function MiCuentaPage() {
   const [facturas, setFacturas] = useState<any[]>([]);
@@ -45,9 +46,10 @@ export default function MiCuentaPage() {
   );
 
   return (
-    <main className="px-6 py-12">
+    <main className="px-6 py-12 mt-12">
       {/* 🔹 Título principal usando estilos globales */}
-      <h1 className="title-xl text-center">Mi Cuenta</h1>
+      <UserNav />
+        <h1 className="title-xl text-center">Mi Cuenta</h1>
 
       {error ? (
         <p className="text-center text-red-500 w-full">{error}</p>
@@ -59,7 +61,7 @@ export default function MiCuentaPage() {
           {/* 🔹 Aviso corporativo */}
           <div className="card shadow-card mb-8">
             <h3 className="title-md mb-2">Aviso</h3>
-            <p>
+            <p className="text-black">
               Recuerda que las facturas pendientes deben ser pagadas antes del día 10 de cada mes.
             </p>
           </div>
@@ -100,4 +102,6 @@ export default function MiCuentaPage() {
     </main>
   );
 }
+
+
 
