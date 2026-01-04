@@ -15,7 +15,7 @@ const UserNav = () => {
       <Link href="/mi-cuenta/configuracion" className="bg-gray-500 px-4 py-2 rounded text-white cursor-pointer">
         Configuracion
       </Link>
-      {user.rol == "admin" && (
+      {user?.rol == "admin" && (
         <Link href="/admin" className="bg-blue-500 px-4 py-2 rounded text-white cursor-pointer">
           Admin
         </Link>

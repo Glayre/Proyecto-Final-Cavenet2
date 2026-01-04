@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link"; // 👈 Importa Link de Next.js
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -71,15 +72,15 @@ export default function LoginPage() {
 
           <p className="text-center text-sm mt-4">
             ¿No tienes cuenta?{" "}
-            <a href="/register" className="text-cavenetIndigo hover:underline">
+            <Link href="/register" className="text-cavenetIndigo hover:underline">
               Regístrate aquí
-            </a>
+            </Link>
           </p>
           <p className="text-center text-sm mt-2">
             ¿Olvidaste tu contraseña?{" "}
-            <a href="/mi-cuenta" className="text-cavenetIndigo hover:underline">
+            <Link href="/recover" className="text-cavenetIndigo hover:underline">
               Recuperar acceso
-            </a>
+            </Link>
           </p>
 
           {error && (
@@ -101,13 +102,13 @@ export default function LoginPage() {
       >
         <div className="text-center px-8">
           {/* Internet Fibra + SVG */}
-        <div className="flex items-center justify-center gap-2 mb-2">
-        <img src="/Vector.png" alt="Decorativo" className="w-6 h-6" />
-        <h2 className="text-5xl font-extrabold leading-tight">
-        Internet Fibra
-        </h2>
-        </div>
-      
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <img src="/Vector.png" alt="Decorativo" className="w-6 h-6" />
+            <h2 className="text-5xl font-extrabold leading-tight">
+              Internet Fibra
+            </h2>
+          </div>
+
           {/* Óptica */}
           <h2 className="text-5xl font-extrabold leading-tight mb-4">
             Óptica

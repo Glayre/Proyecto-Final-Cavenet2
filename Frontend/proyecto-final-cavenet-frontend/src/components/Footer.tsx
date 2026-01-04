@@ -15,7 +15,7 @@ export default function Footer() {
       {/* Logo centrado */}
       <div className="flex justify-center mb-8">
         <Image
-          src="/logocavenet1.png" // 👈 tu logo en carpeta /public
+          src="/logocavenet1.png" //  logo en carpeta /public
           alt="Cavenet Logo"
           width={220}
           height={100}
@@ -26,7 +26,7 @@ export default function Footer() {
       {/* Redes sociales centradas */}
       <div className="flex justify-center gap-8 mb-8">
         <a
-          href="https://facebook.com/cavenet" // 👈 tu cuenta real
+          href="https://facebook.com/cavenet" // tu cuenta real
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-[var(--color-cavenetIndigo)]"

@@ -18,8 +18,9 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",               // 🔹 agregado: define la raíz del proyecto
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"]            // 🔹 corregido: sin "./", apunta directo a src
     }
   },
   "include": [
