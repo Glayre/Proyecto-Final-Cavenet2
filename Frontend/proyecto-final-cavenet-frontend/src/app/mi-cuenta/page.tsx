@@ -47,18 +47,15 @@ export default function MiCuentaPage() {
 
   return (
     <main className="px-6 py-12 mt-12">
-      {/* 🔹 Título principal usando estilos globales */}
       <UserNav />
-        <h1 className="title-xl text-center">Mi Cuenta</h1>
+      <h1 className="title-xl text-center">Mi Cuenta</h1>
 
       {error ? (
         <p className="text-center text-red-500 w-full">{error}</p>
       ) : (
         <div className="max-w-4xl mx-auto">
-          {/* 🔹 Subtítulo */}
           <h2 className="title-lg mb-6">Mis Facturas</h2>
 
-          {/* 🔹 Aviso corporativo */}
           <div className="card shadow-card mb-8">
             <h3 className="title-md mb-2">Aviso</h3>
             <p className="text-black">
@@ -84,9 +81,14 @@ export default function MiCuentaPage() {
             </div>
           </div>
 
-          {/* 🔹 Botón de acción global */}
+          {/* 🔹 Botón de acción: Reportar pago */}
           <div className="text-center mb-8">
-            <button className="btn-primary">Pagar ahora</button>
+            <button
+              className="btn-primary"
+              onClick={() => router.push("/reporte-pago")}
+            >
+              Reportar pago
+            </button>
           </div>
 
           {/* 🔹 Tabla de facturas */}
@@ -102,4 +104,3 @@ export default function MiCuentaPage() {
     </main>
   );
 }
-
