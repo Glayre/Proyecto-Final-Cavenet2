@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import {useRouter} from "next/router"
 
 interface Invoice {
   id: string;
@@ -19,7 +19,8 @@ interface Props {
 export default function InvoiceTable({ invoices }: Props) {
   const reportarPago = async (id: string) => {
     console.log("📤 Reportar pago de factura:", id);
-    // Aquí puedes conectar con tu backend para actualizar estado a "pagado"
+  const router = useRouter();
+  router.push("reporte-pago?id="+id);
   };
 
   return (

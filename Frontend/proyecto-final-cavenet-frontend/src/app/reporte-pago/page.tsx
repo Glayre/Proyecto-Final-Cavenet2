@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { apiFetch } from "@/lib/api";
 
 export default function ReportePagoPage() {
   const tasa = 303.92; // 🔹 Tasa del día (puedes reemplazar con API)
@@ -8,7 +10,7 @@ export default function ReportePagoPage() {
 
   const deudaBs = (deudaUsd * tasa).toFixed(2);
   const pagosBs = (pagosUsd * tasa).toFixed(2);
-
+  const [factura, setFactura] = useState<any[]>([]);
   const [montoUsd, setMontoUsd] = useState("");
   const [montoBs, setMontoBs] = useState("");
   const [bancoOrigen, setBancoOrigen] = useState("");
@@ -17,10 +19,30 @@ export default function ReportePagoPage() {
   const [fecha, setFecha] = useState("2026-01-04");
   const [referencia, setReferencia] = useState("");
 
-  useEffect(() => {
-    const valor = parseFloat(montoUsd);
-    setMontoBs(isNaN(valor) ? "" : (valor * tasa).toFixed(2));
-  }, [montoUsd]);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  
+    useEffect(() => {
+      const token = localStorage.getItem("authToken");
+      const user = localStorage.getItem("authUser");
+      const datos = user ? JSON.parse(user) : null;
+  
+      if (!token) {
+        router.push("/login"); // 🔹 Redirige si no hay token
+        return;
+      }
+      // Tomamos la facturaId del parámetro de la URL
+      const {id} = router.query;
+  
+      if (!datos?._id) {
+        setError("No se encontró el usuario en localStorage");
+        return;
+      }
+  
+      apiFetch("/api/invoices/und/" + id, { method: "GET" })
+        .then((data) => setFactura(data))
+        .catch((err) => setError(err.message));
+    }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,21 +63,15 @@ export default function ReportePagoPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* 🟦 Estado de cuenta */}
         <div className="card bg-white border border-[var(--color-cavenetBlue)] space-y-4">
-          <h2 className="title-lg">Mi estado de cuenta</h2>
-          <p className="text-cavenetIndigo font-semibold">NOVIEMBRE 2025</p>
+          {factura && (<>
+          <h2 className="title-lg">Estado de Cuenta</h2>
+          <h2 className="title-md">Mes: {factura.fecha}</h2>
 
-          <button className="btn-outline w-full">
-            Pendiente por pagar: VED Bs. {deudaBs}
-          </button>
-
-          <div className="text-sm text-[var(--color-cavDark)]">
-            <p>Deuda Total:</p>
-            <p>USD ${deudaUsd} / VED Bs. {deudaBs}</p>
-          </div>
-
-          <button className="btn-secondary w-full">
-            Pagos agregados: USD ${pagosUsd} / VED Bs. {pagosBs}
-          </button>
+          <p className="text-sm">Factura N°: <strong>{factura.id}</strong></p>
+          <p className="text-sm">Monto Total: <strong>USD {factura.montoUSD} / VED Bs. {factura.montoBs}</strong></p>
+          <p className="text-sm">Estado: <strong>{factura.estado}</strong></p>
+          <p className="text-sm">Detalle: <strong>{factura.detalle}</strong></p>
+          </>)} 
         </div>
 
         {/* 🟩 Formulario de pago */}
