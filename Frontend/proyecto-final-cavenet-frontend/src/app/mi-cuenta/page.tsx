@@ -97,7 +97,7 @@ export default function MiCuentaPage() {
               No tienes facturas registradas.
             </p>
           ) : (
-            <InvoiceTable invoices={facturas} />
+            <InvoiceTable invoices={facturas} router={router} />
           )}
         </div>
       )}

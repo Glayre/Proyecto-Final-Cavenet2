@@ -1,10 +1,13 @@
 "use client";
-import {useRouter} from "next/router"
+
+import App from "next/app";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
 
 interface Invoice {
   id: string;
   fecha: string;
-  estado: "Pagada" | "Pendiente" | "Vencida";
+  estado: "Pagada" | "Pendiente" | "Vencida" | "reportado";
   detalle?: string;
   moneda?: string;
   monto?: string; // compatibilidad con formato anterior
@@ -14,12 +17,13 @@ interface Invoice {
 
 interface Props {
   invoices: Invoice[];
+  router: AppRouterInstance;
 }
 
-export default function InvoiceTable({ invoices }: Props) {
+export default function InvoiceTable({ invoices, router }: Props) {
   const reportarPago = async (id: string) => {
     console.log("📤 Reportar pago de factura:", id);
-  const router = useRouter();
+  
   router.push("reporte-pago?id="+id);
   };
 
@@ -39,6 +43,7 @@ export default function InvoiceTable({ invoices }: Props) {
         </thead>
         <tbody>
           {invoices.map((invoice) => {
+            
             const usd = typeof invoice.montoUSD === "number" ? invoice.montoUSD : 0;
             const bs =
               typeof invoice.montoBs === "string"
@@ -73,7 +78,9 @@ export default function InvoiceTable({ invoices }: Props) {
                     ? "Debe pagar antes del 10"
                     : invoice.estado === "Vencida"
                     ? "Factura vencida"
-                    : ""}
+                    : invoice.estado === "reportado"
+                    ? "Pago en revisión"
+                    : "—"}
                 </td>
                 <td className="px-4 py-2">
                   {invoice.estado === "Pendiente" && (
@@ -99,6 +106,9 @@ export default function InvoiceTable({ invoices }: Props) {
                   )}
                   {invoice.estado === "Vencida" && (
                     <span className="text-red-600">Factura vencida</span>
+                  )}
+                  {invoice.estado === "reportado" && (
+                    <span className="text-blue-600">Factura reportada</span>
                   )}
                 </td>
               </tr>

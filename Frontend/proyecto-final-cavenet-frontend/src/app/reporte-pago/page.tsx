@@ -1,16 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
+interface ReportePagoPageProps {
+  fecha?: string;
+  id?: string;
+  montoUSD?: number;
+  montoBs?: number;
+  estado?: string;
+  detalle?: string;
+  tasaVED?: number;
+  moneda?: string;
+}
 export default function ReportePagoPage() {
   const tasa = 303.92; // 🔹 Tasa del día (puedes reemplazar con API)
   const deudaUsd = 26.9;
   const pagosUsd = 10;
-
+  const token = localStorage.getItem("authToken");
+  const user = localStorage.getItem("authUser");
+  const datos = user ? JSON.parse(user) : null;
   const deudaBs = (deudaUsd * tasa).toFixed(2);
   const pagosBs = (pagosUsd * tasa).toFixed(2);
-  const [factura, setFactura] = useState<any[]>([]);
+  const [factura, setFactura] = useState<ReportePagoPageProps>({});
   const [montoUsd, setMontoUsd] = useState("");
   const [montoBs, setMontoBs] = useState("");
   const [bancoOrigen, setBancoOrigen] = useState("");
@@ -21,18 +33,17 @@ export default function ReportePagoPage() {
 
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
   
     useEffect(() => {
-      const token = localStorage.getItem("authToken");
-      const user = localStorage.getItem("authUser");
-      const datos = user ? JSON.parse(user) : null;
+      
   
       if (!token) {
         router.push("/login"); // 🔹 Redirige si no hay token
         return;
       }
       // Tomamos la facturaId del parámetro de la URL
-      const {id} = router.query;
+      const id = searchParams.get("id");
   
       if (!datos?._id) {
         setError("No se encontró el usuario en localStorage");
@@ -46,10 +57,23 @@ export default function ReportePagoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const datosReporte = {
+      clienteId: datos._id,
+      invoiceId: factura.id,
+      monto: parseFloat(montoBs),
+      montoMoneda: "VED", 
+      bancoOrigen,
+      cuentaDestino,
+      referencia,
+      fecha
+    }
+    console.log("Enviando datos de reporte de pago:", datosReporte);
+
+        
     const res = await fetch("http://localhost:4000/api/users/reporte-pago", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ montoUsd, montoBs, bancoOrigen, cuentaDestino, cedula, fecha, referencia }),
+      headers: { "Content-Type": "application/json" , Authorization: `Bearer ${localStorage.getItem("authToken")}`},
+      body: JSON.stringify(datosReporte),
     });
     const data = await res.json();
     console.log("Respuesta del backend:", data);
@@ -62,7 +86,7 @@ export default function ReportePagoPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* 🟦 Estado de cuenta */}
-        <div className="card bg-white border border-[var(--color-cavenetBlue)] space-y-4">
+        <div className="card bg-white border border-cavenetBlue] space-y-4">
           {factura && (<>
           <h2 className="title-lg">Estado de Cuenta</h2>
           <h2 className="title-md">Mes: {factura.fecha}</h2>
@@ -75,23 +99,18 @@ export default function ReportePagoPage() {
         </div>
 
         {/* 🟩 Formulario de pago */}
-        <form onSubmit={handleSubmit} className="card bg-white border border-[var(--color-cavenetIndigo)] space-y-4">
+        <form onSubmit={handleSubmit} className="card bg-white border border-cavenetIndigo] space-y-4">
           <h2 className="title-lg">Información del pago</h2>
           <p className="text-sm">Tasa del día: <strong>1 USD = {tasa} VES</strong></p>
 
           <input
             type="text"
-            placeholder="Monto en USD"
-            value={montoUsd}
-            onChange={(e) => setMontoUsd(e.target.value)}
+            placeholder="Monto en Bs"
+            value={montoBs}
+            onChange={(e) => setMontoBs(e.target.value)}
             className="w-full border rounded-lg px-4 py-2"
           />
-          {montoBs && (
-            <p className="text-sm text-[var(--color-cavDark)]">
-              Monto en Bs: VED Bs. {montoBs}
-            </p>
-          )}
-
+         
           <input
             type="text"
             placeholder="Banco Origen"
@@ -108,13 +127,7 @@ export default function ReportePagoPage() {
             <option value="Banco A">Banco A</option>
             <option value="Banco B">Banco B</option>
           </select>
-          <input
-            type="text"
-            placeholder="N° de cédula de identidad"
-            value={cedula}
-            onChange={(e) => setCedula(e.target.value)}
-            className="w-full border rounded-lg px-4 py-2"
-          />
+          
           <input
             type="date"
             value={fecha}
@@ -130,10 +143,8 @@ export default function ReportePagoPage() {
           />
 
           <div className="flex gap-4 pt-4">
-            <button type="button" className="btn-primary w-1/2 text-white">
-              Agregar pago
-            </button>
-            <button type="submit" className="btn-secondary w-1/2 text-white">
+            <button type="submit" className="btn-primary w-1/2 text-black">
+
               Enviar pago, abono
             </button>
           </div>
