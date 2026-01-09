@@ -61,7 +61,7 @@ export default function PlanCard({
             <img
               src={medidor}
               alt={`Medidor ${velocidad}`}
-              className="w-32 h-auto drop-shadow-sm"
+              className="w-32 h-auto"
             />
           </div>
         )}
