@@ -1,21 +1,30 @@
 "use client";
 import { useState } from "react";
 
-const Dato = ({ label, value, onChange }) => {
+type DatoProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+};
+
+const Dato = ({ label, value, onChange, placeholder = "" }: DatoProps) => {
   return (
     <div className="flex flex-col w-full">
-    <label className="text-[16px] font-light mb-2">{label}</label>
-    <input className="w-full h-[32px] mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md" value={value} onChange={onChange} />
+      <label className="text-[16px] font-light mb-2">{label}</label>
+      <input
+        className="w-full h-[32px] mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </div>
-)
+  );
 };
 
 export default function Page() {
   const planesHogar = ["BÁSICO", "BÁSICO Plus"];
-
-  const planesPyme = ["Bronce PyME", "Plata PyME", "Oro PyME" , "Diamante PyME"];
-
-
+  const planesPyme = ["Bronce PyME", "Plata PyME", "Oro PyME", "Diamante PyME"];
 
   const [formData, setFormData] = useState({
     nombres: "",
@@ -61,30 +70,35 @@ export default function Page() {
     <main className="flex flex-col lg:flex-row w-full bg-white text-black items-center lg:items-start justify-center py-12">
       {/* 🔹 Formulario */}
       <section className="grid grid-cols-2 justify-center items-center gap-4 px-12 max-w-[425px] mx-auto lg:mx-0 lg:ml-24 mt-12">
-      <h1 className="text-[35px] font-semibold text-center col-span-2">Contrato para Hogares</h1>
+        <h1 className="text-[35px] font-semibold text-center col-span-2">Contrato para Hogares</h1>
 
         <h2 className="text-[30px] font-semibold mt-6 col-span-2">Plan</h2>
-        <div className="col-span-2">  
-        <Select label="Plan de Navegación" options={planesHogar} value={formData.plan} onChange={(v: string) => handleChange("plan", v)} />
+        <div className="col-span-2">
+          <Select
+            label="Plan de Navegación"
+            options={planesHogar}
+            value={formData.plan}
+            onChange={(v: string) => handleChange("plan", v)}
+          />
         </div>
+
         <h2 className="text-[30px] font-semibold col-span-2">Datos Personales</h2>
-        <Dato label="Nombres" value={formData.nombres} onChange={(v: string) => handleChange("nombres", v)} />
-        <Dato label="Apellidos" value={formData.apellidos} onChange={(v: string) => handleChange("apellidos", v)} />
-        <Dato label="Cédula" value={formData.cedula} onChange={(v: string) => handleChange("cedula", v)} />
-        <Dato label="Fecha de Nacimiento" placeholder="dd/mm/aaaa" value={formData.fechaNacimiento} onChange={(v: string) => handleChange("fechaNacimiento", v)} />
-        <Dato label="Correo Electrónico" value={formData.correo} onChange={(v: string) => handleChange("correo", v)} />
+        <Dato label="Nombres" value={formData.nombres} onChange={(v) => handleChange("nombres", v)} />
+        <Dato label="Apellidos" value={formData.apellidos} onChange={(v) => handleChange("apellidos", v)} />
+        <Dato label="Cédula" value={formData.cedula} onChange={(v) => handleChange("cedula", v)} />
+        <Dato label="Fecha de Nacimiento" placeholder="dd/mm/aaaa" value={formData.fechaNacimiento} onChange={(v) => handleChange("fechaNacimiento", v)} />
+        <Dato label="Correo Electrónico" value={formData.correo} onChange={(v) => handleChange("correo", v)} />
 
         <h2 className="text-[30px] font-semibold mt-6 col-span-2">Dirección</h2>
-        <Dato label="Ciudad" value={formData.ciudad} onChange={(v: string) => handleChange("ciudad", v)} />
-        <Dato label="Calle Principal" value={formData.callePrincipal} onChange={(v: string) => handleChange("callePrincipal", v)} />
-        <Dato label="Calle Secundaria" value={formData.calleSecundaria} onChange={(v: string) => handleChange("calleSecundaria", v)} />
-        <Dato label="Número de casa o apartamento" value={formData.numeroCasa} onChange={(v: string) => handleChange("numeroCasa", v)} />
-
+        <Dato label="Ciudad" value={formData.ciudad} onChange={(v) => handleChange("ciudad", v)} />
+        <Dato label="Calle Principal" value={formData.callePrincipal} onChange={(v) => handleChange("callePrincipal", v)} />
+        <Dato label="Calle Secundaria" value={formData.calleSecundaria} onChange={(v) => handleChange("calleSecundaria", v)} />
+        <Dato label="Número de casa o apartamento" value={formData.numeroCasa} onChange={(v) => handleChange("numeroCasa", v)} />
 
         <h2 className="text-[30px] font-semibold mt-6 col-span-2">Datos de contacto</h2>
-        <Dato label="Teléfono" value={formData.telefono} onChange={(v: string) => handleChange("telefono", v)} />
-        <Dato label="Otro número de contacto (Opcional)" value={formData.otroContacto} onChange={(v: string) => handleChange("otroContacto", v)} />
-        <Dato label="Correo Electrónico alternativo" value={formData.correoAlternativo} onChange={(v: string) => handleChange("correoAlternativo", v)} />
+        <Dato label="Teléfono" value={formData.telefono} onChange={(v) => handleChange("telefono", v)} />
+        <Dato label="Otro número de contacto (Opcional)" value={formData.otroContacto} onChange={(v) => handleChange("otroContacto", v)} />
+        <Dato label="Correo Electrónico alternativo" value={formData.correoAlternativo} onChange={(v) => handleChange("correoAlternativo", v)} />
 
         <button
           onClick={handleSubmit}
