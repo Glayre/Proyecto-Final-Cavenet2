@@ -55,9 +55,9 @@ export default function Navbar() {
               <Elemento href="/cobertura" text="Cobertura" />
               <Elemento href="/contratar" text="Contratar" />
               <Elemento href="/planes" text="Planes" />
-              <Elemento href="/reporte-pago" text="Reporta tu pago" />
+              <Elemento href="/reporte-pago" text="Pago" />
               <Elemento href="/contacto" text="Contacto" />
-              <Elemento href="/mi-cuenta" text="Mi cuenta" />
+              <Elemento href="/mi-cuenta" text="Cuenta" />
             </div>
           </ul>
         </div>

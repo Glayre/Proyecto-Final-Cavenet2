@@ -10,7 +10,6 @@ export default function CoberturaPage() {
 
   const [index, setIndex] = useState(0);
 
-  // Cambiar imagen cada 4 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % mapas.length);
@@ -31,31 +30,31 @@ export default function CoberturaPage() {
 
       {/* Sección visual del mapa */}
       <section
-        className="relative w-full max-w-[1579px] h-[1124px] mx-auto shadow-card rounded-xl bg-cover bg-center"
+        className="relative w-full mx-auto shadow-card rounded-xl bg-cover bg-center flex flex-col items-center justify-center p-6"
         style={{ backgroundImage: "url('/mapadevenezuelafondoazul.jpg')" }}
       >
         {/* Título grande */}
-        <h2 className="absolute top-[208px] left-[86px] w-[1415px] text-center font-bold text-[#FFF8F8] text-[60px] leading-[73px]">
+        <h2 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-center mb-2">
           Mapa de cobertura y
         </h2>
-        <h2 className="absolute top-[275px] left-[103px] w-[1382px] text-center font-bold text-[#FFF8F8] text-[60px] leading-[73px]">
+        <h2 className="font-bold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-center mb-6">
           ubicaciones
         </h2>
 
         {/* Texto de zonas */}
-        <p className="absolute top-[368px] left-[103px] w-[1382px] text-center font-bold text-[#FFF8F8] text-[30px] leading-[36px]">
+        <p className="font-bold text-white text-lg sm:text-xl md:text-2xl text-center">
           Puedes disfrutar de nuestro servicio en San Diego,
         </p>
-        <p className="absolute top-[404px] left-[101px] w-[1381px] text-center font-bold text-[#FFF8F8] text-[30px] leading-[36px]">
+        <p className="font-bold text-white text-lg sm:text-xl md:text-2xl text-center mb-8">
           Los Guayos y Guacara.
         </p>
 
         {/* Carrusel de mapas */}
-        <div className="absolute top-[670px] left-[462px] w-[657px] h-[381px] rounded-lg overflow-hidden shadow-card">
+        <div className="w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl aspect-video rounded-lg overflow-hidden shadow-card">
           <img
             src={mapas[index].src}
             alt={mapas[index].alt}
-            className="w-full h-full object-cover transition-opacity duration-700"
+            className="w-full h-full object-contain transition-opacity duration-700"
           />
         </div>
       </section>
