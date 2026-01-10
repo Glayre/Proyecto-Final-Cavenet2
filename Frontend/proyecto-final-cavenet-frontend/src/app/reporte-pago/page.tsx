@@ -81,7 +81,7 @@ export default function ReportePagoPage() {
   };
 
   return (
-    <main className="section bg-[var(--color-cavGray)]">
+    <main className="section bg-cavGray">
       <h1 className="section-title">Reporta tu pago</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">

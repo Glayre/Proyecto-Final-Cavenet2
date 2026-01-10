@@ -13,7 +13,7 @@ const Dato = ({ label, value, onChange, placeholder = "" }: DatoProps) => {
     <div className="flex flex-col w-full">
       <label className="text-[16px] font-light mb-2">{label}</label>
       <input
-        className="w-full h-[32px] mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
+        className="w-full h-8 mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
@@ -42,6 +42,7 @@ export default function Page() {
     correoAlternativo: "",
   });
 
+
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -69,7 +70,7 @@ export default function Page() {
   return (
     <main className="flex flex-col lg:flex-row w-full bg-white text-black items-center lg:items-start justify-center py-12">
       {/* 🔹 Formulario */}
-      <section className="grid grid-cols-2 justify-center items-center gap-4 px-12 max-w-[425px] mx-auto lg:mx-0 lg:ml-24 mt-12">
+      <section className="grid grid-cols-2 justify-center items-center gap-4 px-12 max-w-106.25 mx-auto lg:mx-0 lg:ml-24 mt-12">
         <h1 className="text-[35px] font-semibold text-center col-span-2">Contrato para Hogares</h1>
 
         <h2 className="text-[30px] font-semibold mt-6 col-span-2">Plan</h2>
@@ -102,14 +103,14 @@ export default function Page() {
 
         <button
           onClick={handleSubmit}
-          className="w-[238px] h-[48px] bg-[#2041E3] text-white font-bold text-[20px] rounded-md hover:bg-[#1a36b0] transition self-center mt-8 col-span-2 flex items-center justify-center"
+          className="w-59.5 h-12 bg-[#2041E3] text-white font-bold text-[20px] rounded-md hover:bg-[#1a36b0] transition self-center mt-8 col-span-2 flex items-center justify-center"
         >
           Procesar
         </button>
       </section>
 
       {/* 🔹 Imágenes con texto */}
-      <aside className="hidden lg:flex flex-col gap-12 px-8 py-12 w-[600px]">
+      <aside className="hidden lg:flex flex-col gap-12 px-8 py-12 w-150">
         <ImageBlock
           src="/conexionhogar.png"
           alt="Conectamos tu hogar"
@@ -147,7 +148,7 @@ function Input({ label, value, onChange, placeholder = "" }: InputProps) {
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-[51px] px-4 bg-white/60 border border-[#2041E3] rounded-md"
+        className="h-12.75 px-4 bg-white/60 border border-[#2041E3] rounded-md"
       />
     </div>
   );
@@ -167,7 +168,7 @@ function Select({ label, options, value, onChange }: SelectProps) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-[51px] px-4 bg-white/60 border border-[#2041E3] rounded-md"
+        className="h-12.75 px-4 bg-white/60 border border-[#2041E3] rounded-md"
       >
         <option value="">Seleccione una opción</option>
         {options.map((opt: string, idx: number) => (

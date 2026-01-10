@@ -53,7 +53,7 @@ export default function Navbar() {
             >
               <Elemento href="/" text="Inicio" />
               <Elemento href="/cobertura" text="Cobertura" />
-              <Elemento href="/contratar" text="Contratar" />
+              <Elemento href="/registro" text="Registro" />
               <Elemento href="/planes" text="Planes" />
               <Elemento href="/reporte-pago" text="Pago" />
               <Elemento href="/contacto" text="Contacto" />

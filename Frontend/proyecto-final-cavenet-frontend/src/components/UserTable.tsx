@@ -39,9 +39,9 @@ export default function UserTable({ Users, router }: Props) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-[var(--background)] shadow-card rounded-xl">
+      <table className="min-w-full bg-background shadow-card rounded-xl">
         <thead>
-          <tr className="bg-[var(--color-cavenetBlue)] text-white">
+          <tr className="bg-cavenetBlue text-white">
             <th className="px-4 py-2 text-left">Cédula</th>
             <th className="px-4 py-2 text-left">Nombre</th>
             <th className="px-4 py-2 text-left">Apellido</th>
@@ -57,15 +57,15 @@ export default function UserTable({ Users, router }: Props) {
           {Users.map((user) => {
             
             return (
-                <tr key={user.id} className="border-b hover:bg-[var(--color-cavGray)]">
-                <td className="px-4 py-2 font-medium text-[var(--color-cavDark)]">{user.cedula}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.nombre}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.apellido}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.email}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.telefono}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.direccion.calle}, {user.direccion.ciudad}, {user.direccion.sede}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.rol}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{user.saldoFavorVED}</td>
+                <tr key={user.id} className="border-b hover:bg-color-cavGray">
+                <td className="px-4 py-2 font-medium text-color-cavDark">{user.cedula}</td>
+                <td className="px-4 py-2 text-foreground">{user.nombre}</td>
+                <td className="px-4 py-2 text-foreground">{user.apellido}</td>
+                <td className="px-4 py-2 text-foreground">{user.email}</td>
+                <td className="px-4 py-2 text-foreground">{user.telefono}</td>
+                <td className="px-4 py-2 text-foreground">{user.direccion.calle}, {user.direccion.ciudad}, {user.direccion.sede}</td>
+                <td className="px-4 py-2 text-foreground">{user.rol}</td>
+                <td className="px-4 py-2 text-foreground">{user.saldoFavorVED}</td>
                 <td className="px-4 py-2">
                     <button
                         onClick={() => verUsuario(user.id)}
