@@ -19,9 +19,22 @@ interface Invoice {
 interface Props {
   invoices: Invoice[];
   router: AppRouterInstance;
+
+  // 🔹 NUEVO: props para paginación
+  currentPage?: number;
+  totalPages?: number;
+  onPrevPage?: () => void;
+  onNextPage?: () => void;
 }
 
-export default function InvoiceTable({ invoices, router }: Props) {
+export default function InvoiceTable({
+  invoices,
+  router,
+  currentPage,
+  totalPages,
+  onPrevPage,
+  onNextPage,
+}: Props) {
   const reportarPago = async (id: string) => {
     console.log("📤 Reportar pago de factura:", id);
     router.push("reporte-pago?id=" + id);
@@ -43,8 +56,12 @@ export default function InvoiceTable({ invoices, router }: Props) {
         </thead>
         <tbody>
           {invoices.map((invoice) => {
-            const totalUSD = typeof invoice.montoUSD === "number" ? invoice.montoUSD : 0;
-            const abonadoUSD = typeof invoice.montoAbonado === "number" ? invoice.montoAbonado : 0;
+            const totalUSD =
+              typeof invoice.montoUSD === "number" ? invoice.montoUSD : 0;
+            const abonadoUSD =
+              typeof invoice.montoAbonado === "number"
+                ? invoice.montoAbonado
+                : 0;
             const pendienteUSD =
               typeof invoice.montoPendiente === "number"
                 ? invoice.montoPendiente
@@ -59,23 +76,35 @@ export default function InvoiceTable({ invoices, router }: Props) {
 
             // 🔧 Normalizar estado
             const estadoNormalizado =
-              invoice.estado?.toLowerCase() === "pagado" ? "Pagada" : invoice.estado;
+              invoice.estado?.toLowerCase() === "pagado"
+                ? "Pagada"
+                : invoice.estado;
 
             return (
-              <tr key={invoice.id} className="border-b hover:bg-[var(--color-cavGray)]">
-                <td className="px-4 py-2 font-medium text-[var(--color-cavDark)]">{invoice.id}</td>
-                <td className="px-4 py-2 text-[var(--foreground)]">{invoice.fecha}</td>
+              <tr
+                key={invoice.id}
+                className="border-b hover:bg-[var(--color-cavGray)]"
+              >
+                <td className="px-4 py-2 font-medium text-[var(--color-cavDark)]">
+                  {invoice.id}
+                </td>
+                <td className="px-4 py-2 text-[var(--foreground)]">
+                  {invoice.fecha}
+                </td>
                 <td className="px-4 py-2 text-[var(--foreground)]">
                   <div className="flex flex-col">
                     <span>Total: USD $ {totalUSD.toFixed(2)}</span>
                     <span>Abonado: USD $ {abonadoUSD.toFixed(2)}</span>
                     <span className="text-blue-600 font-semibold">
-                      Pendiente: USD $ {pendienteUSD.toFixed(2)} / Bs. {pendienteBs}
+                      Pendiente: USD $ {pendienteUSD.toFixed(2)} / Bs.{" "}
+                      {pendienteBs}
                     </span>
                   </div>
                 </td>
                 <td className="px-4 py-2">
-                  <span className={`estado-${estadoNormalizado.toLowerCase()}`}>
+                  <span
+                    className={`estado-${estadoNormalizado.toLowerCase()}`}
+                  >
                     {estadoNormalizado}
                   </span>
                 </td>
@@ -128,6 +157,29 @@ export default function InvoiceTable({ invoices, router }: Props) {
           })}
         </tbody>
       </table>
+
+      {/* 🔹 NUEVO: Controles de paginación */}
+      {totalPages && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            className="btn-secondary"
+            onClick={onPrevPage}
+            disabled={currentPage === 1}
+          >
+            ← Anterior
+          </button>
+          <span className="text-sm text-gray-700">
+            Página {currentPage} de {totalPages}
+          </span>
+          <button
+            className="btn-secondary"
+            onClick={onNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Siguiente →
+          </button>
+        </div>
+      )}
     </div>
   );
 }

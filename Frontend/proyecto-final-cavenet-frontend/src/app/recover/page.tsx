@@ -1,31 +1,35 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // 🔹 Importar router
 
 export default function RecuperarPage() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter(); // 🔹 Inicializar router
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const res = await fetch("http://localhost:4000/api/users/recover", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
+
       const data = await res.json();
-
-      // 🔹 Aquí se imprime en consola del navegador
-
       console.log("Respuesta del backend:", data);
-      console.log("Mensaje:", data.message);
-      console.log("Usuario:", data.email); 
-      console.log("Token:", data.token);
-      console.log("Enlace de recuperación:", data.resetLink);
 
-      if (!res.ok) throw new Error(data.error || "Error al enviar recuperación");
-      alert("📩 Revisa tu correo para continuar");
+      if (!res.ok || data.error) {
+        alert("❌ Ocurrió un error\nNo se encontró la información relacionada");
+      } else {
+        alert("📩 Revisa tu correo para continuar");
+      }
     } catch (err) {
       alert("❌ Error: " + (err as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,10 +37,20 @@ export default function RecuperarPage() {
     <main className="flex h-screen">
       {/* 🔹 Formulario lado izquierdo */}
       <section className="w-1/2 flex items-center justify-center bg-white px-8">
-        <div className="w-[600px] h-[678px] bg-[#FFFEFE] border border-[#2041E3] rounded-[25px] shadow-lg flex flex-col justify-center items-center p-8">
-          <h1 className="text-3xl font-bold text-center mb-2 text-cavenetBlue">
-            Recuperar Contraseña
-          </h1>
+        <div className="w-[600px] h-[678px] bg-[#FFFEFE] border border-[#2041E3] rounded-[25px] shadow-lg flex flex-col justify-center items-center p-8 relative">
+          {/* 🔹 Flecha + título alineados */}
+          <div className="flex items-center gap-2 mb-4">
+            <button onClick={() => router.push("/login")} className="inline-flex items-center">
+              <img
+                src="/flechaizquierda.png"
+                alt="Volver"
+                className="w-7 h-7 svg-icon"
+              />
+            </button>
+            <h1 className="text-3xl font-bold text-cavenetBlue">
+              Recuperar Contraseña
+            </h1>
+          </div>
 
           {/* 🔹 Bloque visual ajustado */}
           <div className="text-center text-sm mb-6 space-y-1">
@@ -60,10 +74,19 @@ export default function RecuperarPage() {
             <button
               type="submit"
               className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition"
+              disabled={loading}
             >
-              Continuar
+              {loading ? "Buscando información del cliente..." : "Continuar"}
             </button>
           </form>
+
+          {/* 🔹 Animación de búsqueda */}
+          {loading && (
+            <div className="absolute bottom-6 text-center text-cavenetIndigo text-sm">
+              <p>Buscando información del cliente</p>
+              <p>Por favor espere...</p>
+            </div>
+          )}
         </div>
       </section>
 

@@ -11,6 +11,10 @@ export default function MiCuentaPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // 🔹 Estados para paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     const user = localStorage.getItem("authUser");
@@ -50,6 +54,21 @@ export default function MiCuentaPage() {
     (sum, f) => sum + ((f.montoPendiente || 0) * f.tasaVED),
     0
   );
+
+  // 🔹 Calcular facturas de la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentInvoices = facturas.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(facturas.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <main className="px-6 py-12 mt-12">
@@ -118,7 +137,14 @@ export default function MiCuentaPage() {
               No tienes facturas registradas.
             </p>
           ) : (
-            <InvoiceTable invoices={facturas} router={router} />
+            <InvoiceTable
+              invoices={currentInvoices}
+              router={router}
+              currentPage={currentPage}       // 🔹 nuevo
+              totalPages={totalPages}         // 🔹 nuevo
+              onPrevPage={handlePrevPage}     // 🔹 nuevo
+              onNextPage={handleNextPage}     // 🔹 nuevo
+            />
           )}
         </div>
       )}
