@@ -2,20 +2,19 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiFetch } from "@/lib/api";
+import {getTasaCambio} from "@/services/tasaDolar";
 
 interface ReportePagoPageProps {
   fecha?: string;
   id?: string;
-  montoUSD?: number;
-  montoBs?: number;
+  mes?: string;
+  monto?: number;
+  montoAbonado?: number;
   estado?: string;
   detalle?: string;
-  tasaVED?: number;
-  moneda?: string;
 }
 
 export default function ReportePagoPage() {
-  const tasa = 303.92;
   const token = localStorage.getItem("authToken");
   const user = localStorage.getItem("authUser");
   const datos = user ? JSON.parse(user) : null;
@@ -27,6 +26,7 @@ export default function ReportePagoPage() {
   const [fecha, setFecha] = useState("2026-01-04");
   const [referencia, setReferencia] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [tasaCambio, setTasaCambio] = useState<number | null>(0);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -44,6 +44,10 @@ export default function ReportePagoPage() {
     apiFetch("/api/invoices/und/" + id, { method: "GET" })
       .then((data) => setFactura(data))
       .catch((err) => setError(err.message));
+    // Obtener la tasa de cambio actual
+    getTasaCambio()
+      .then((tasa) => setTasaCambio(tasa))
+      .catch((err) => console.error("Error al obtener la tasa de cambio:", err));
   }, [router]);
 
   // 🔹 Función para cerrar con ❌
@@ -93,7 +97,7 @@ export default function ReportePagoPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* Estado de cuenta */}
         <div className="card bg-white border border-cavenetBlue space-y-4">
-          {factura && (
+          {factura && tasaCambio && (
             <>
               <h2 className="title-lg">Estado de Cuenta</h2>
               <h2 className="title-md">Mes: {factura.fecha}</h2>
@@ -101,7 +105,10 @@ export default function ReportePagoPage() {
                 Factura N°: <strong>{factura.id}</strong>
               </p>
               <p className="text-sm">
-                Monto Total: <strong>USD {factura.montoUSD} / VED Bs. {factura.montoBs}</strong>
+                Monto Total: <strong>USD {factura.monto} / VED Bs. {(factura.monto || 0) * tasaCambio}</strong>
+              </p>
+              <p className="text-sm">
+                Monto Abonado: <strong>USD {factura.montoAbonado} / VED Bs. {(factura.montoAbonado || 0) * tasaCambio}</strong>
               </p>
               <p className="text-sm">
                 Estado: <strong>{factura.estado}</strong>
@@ -116,7 +123,7 @@ export default function ReportePagoPage() {
         {/* Formulario de pago */}
         <form onSubmit={handleSubmit} className="card bg-white border border-cavenetIndigo space-y-4">
           <h2 className="title-lg">Información del pago</h2>
-          <p className="text-sm">Tasa del día: <strong>1 USD = {tasa} VES</strong></p>
+          <p className="text-sm">Tasa del día: <strong>1 USD = {tasaCambio} VES</strong></p>
 
           <input
             type="text"

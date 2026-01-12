@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {useEffect} from "react";
 import Link from "next/link"; // 👈 Importa Link de Next.js
 
 export default function LoginPage() {
@@ -8,6 +9,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      router.push("/mi-cuenta");
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,10 +33,9 @@ export default function LoginPage() {
       if (!res.ok) throw new Error(data.error || "Credenciales inválidas");
 
       localStorage.setItem("authToken", data.token);
-      localStorage.setItem("authUser", JSON.stringify(data.user));
+      localStorage.setItem("userId", data.id);
 
       console.log("➡️ Token guardado:", data.token);
-      console.log("➡️ Usuario guardado:", data.user);
 
       router.push("/mi-cuenta");
     } catch (err) {
