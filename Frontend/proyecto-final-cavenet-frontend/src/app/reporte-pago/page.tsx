@@ -16,10 +16,11 @@ interface ReportePagoPageProps {
 
 export default function ReportePagoPage() {
   const token = localStorage.getItem("authToken");
-  const user = localStorage.getItem("authUser");
-  const datos = user ? JSON.parse(user) : null;
+  const userid = localStorage.getItem("userId");
+
 
   const [factura, setFactura] = useState<ReportePagoPageProps>({});
+  const [datos, setDatos] = useState<any>({});
   const [montoBs, setMontoBs] = useState("");
   const [bancoOrigen, setBancoOrigen] = useState("");
   const [cuentaDestino, setCuentaDestino] = useState("");
@@ -37,10 +38,9 @@ export default function ReportePagoPage() {
       return;
     }
     const id = searchParams.get("id");
-    if (!datos?._id) {
-      setError("No se encontró el usuario en localStorage");
-      return;
-    }
+    apiFetch("/api/users/" + userid, { method: "GET" })
+      .then((data) => setDatos(data))
+      .catch((err) => setError(err.message));
     apiFetch("/api/invoices/und/" + id, { method: "GET" })
       .then((data) => setFactura(data))
       .catch((err) => setError(err.message));
@@ -72,7 +72,7 @@ export default function ReportePagoPage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(datosReporte),
     });
@@ -97,7 +97,7 @@ export default function ReportePagoPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* Estado de cuenta */}
         <div className="card bg-white border border-cavenetBlue space-y-4">
-          {factura && tasaCambio && (
+          {factura && (
             <>
               <h2 className="title-lg">Estado de Cuenta</h2>
               <h2 className="title-md">Mes: {factura.fecha}</h2>
@@ -105,10 +105,10 @@ export default function ReportePagoPage() {
                 Factura N°: <strong>{factura.id}</strong>
               </p>
               <p className="text-sm">
-                Monto Total: <strong>USD {factura.monto} / VED Bs. {(factura.monto || 0) * tasaCambio}</strong>
+                Monto Total: <strong>USD {factura.monto} / VED Bs. {(factura.monto || 0) * tasaCambio || 330}</strong>
               </p>
               <p className="text-sm">
-                Monto Abonado: <strong>USD {factura.montoAbonado} / VED Bs. {(factura.montoAbonado || 0) * tasaCambio}</strong>
+                Monto Abonado: <strong>USD {factura.montoAbonado} / VED Bs. {(factura.montoAbonado || 0) * tasaCambio || 330}</strong>
               </p>
               <p className="text-sm">
                 Estado: <strong>{factura.estado}</strong>

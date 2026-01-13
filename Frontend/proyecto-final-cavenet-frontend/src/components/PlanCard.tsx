@@ -35,6 +35,9 @@ export default function PlanCard({
     diamante: "bg-[#9DE3FF] hover:opacity-90 text-[#2114B5]",
   };
 
+  // Generamos un "slug" para la URL (ej: "Básico 100 Mbps" -> "basico-100-mbps")
+  const planSlug = `${nombre}-${velocidad}`.toLowerCase().replace(/\s+/g, '-');
+
   return (
     <div className="card shadow-card text-center hover:scale-105 transition-transform relative p-0 overflow-hidden">
       {/* Encabezado */}
@@ -69,9 +72,11 @@ export default function PlanCard({
         <p className="text-4xl font-semibold text-[var(--color-cavDark)] mb-6">
           {precio}
         </p>
+        
         <div className="flex justify-center">
           <Link
-            href="/contratar"
+            // MODIFICACIÓN: Ahora apunta a /registro y envía el plan como parámetro
+            href={`/registro?plan=${planSlug}`}
             className={`w-[225px] py-2 rounded-lg font-semibold transition-colors text-center ${buttonStyles[variant]}`}
           >
             CONTRATAR

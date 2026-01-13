@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import InvoiceTable from "../../components/InvoiceTable";
 import UserNav from "@/components/UserNav";
-import {getTasaCambio} from "@/services/tasaDolar";
+import { getTasaCambio } from "@/services/tasaDolar";
 
 export default function MiCuentaPage() {
   const [facturas, setFacturas] = useState<any[]>([]);
   const [datos, setDatos] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tasaVED, setTasaVED] = useState<number | null>(0);
+  const [tasaVED, setTasaVED] = useState<number | undefined>(undefined); // Anexo: inicializado en null para validación
   const router = useRouter();
 
   // 🔹 Estados para paginación
@@ -22,10 +22,9 @@ export default function MiCuentaPage() {
     const id = localStorage.getItem("userId");
 
     if (!token && !id) {
-      router.push("/login");
+      router.replace("/login"); // Anexo: replace para evitar volver atrás
       return;
     }
-
 
     apiFetch("/api/users/" + id, { method: "GET" })
       .then((data) => {
@@ -51,7 +50,6 @@ export default function MiCuentaPage() {
     };
 
     fetchTasa();
-
   }, [router]);
 
   // 🔹 Normalizar estados y considerar "reportado"
@@ -68,7 +66,7 @@ export default function MiCuentaPage() {
 
   // 🔹 Recalcular Bs con montoPendiente
   const totalBs = facturasPendientes.reduce(
-    (sum, f) => sum + ((f.montoPendiente || 0) * f.tasaVED),
+    (sum, f) => sum + ((f.montoPendiente || 0) * (f.tasaVED || 0)),
     0
   );
 
@@ -89,7 +87,7 @@ export default function MiCuentaPage() {
 
   return (
     <main className="px-6 py-12 mt-12">
-      <UserNav />
+      <UserNav userData={datos} />
       <h1 className="title-xl text-center">Mi Cuenta</h1>
 
       {error ? (
@@ -102,7 +100,6 @@ export default function MiCuentaPage() {
               <div className="text-black mb-6">
                 <p><strong>Velocidad:</strong> {datos.plan.velocidadMbps}</p>
                 <p><strong>Mensualidad:</strong> USD {datos.plan.precioUSD}</p>
-                {/* <p><strong>tipo:</strong> {datos.plan.tipo}</p> */}
                 <p><strong>Estado del plan:</strong> {datos.plan.activo ? "Activo" : "Suspendido"}</p>
               </div>
             </div>
@@ -117,31 +114,41 @@ export default function MiCuentaPage() {
             </p>
           </div>
 
-          {/* 🔹 Resumen de estado de cuenta */}
+          {/* 🔹 Resumen de estado de cuenta con anexos de protección */}
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div className="card shadow-card">
               <h3 className="title-md mb-2">Saldo a favor</h3>
               {datos && datos.saldoFavorUSD > 0 ? (
-                <p className="text-green-600 text-xl font-semibold">
-                  VED Bs. {datos.saldoFavorUSD}
-                </p>
+                <div>
+                  <p className="text-green-600 text-xl font-semibold">
+                    USD {datos.saldoFavorUSD.toFixed(2)}
+                  </p>
+                  <p className="text-green-600 text-sm">
+                    Bs. {tasaVED ? (datos.saldoFavorUSD * tasaVED).toFixed(2) : "..."}
+                  </p>
+                </div>
               ) : (
                 <p className="text-gray-700 text-lg font-medium">No tienes saldo a favor</p>
+              )}
+            </div>
+
+            {datos && (
+              <div className="card shadow-card">
+                <h3 className="title-md mb-2">Monto a pagar</h3>
+                <p className="text-blue-600 text-xl font-semibold">
+                  {/* Anexo: Math.abs para mostrar monto positivo aunque el saldo sea negativo */}
+                  USD {Math.abs(datos.saldoFavorUSD || 0).toFixed(2)}
+                </p>
+                <p className="text-blue-600 text-xl font-semibold">
+                  {/* Anexo: Validación de tasaVED para evitar errores matemáticos */}
+                  Bs. {tasaVED ? (Math.abs(datos.saldoFavorUSD || 0) * tasaVED).toFixed(2) : "Cargando..."}
+                </p>
+                <p className="text-gray-500 text-xs mt-1">
+                  Tasa: {tasaVED ? `${tasaVED.toFixed(2)} Bs/USD` : "---"}
+                </p>
+              </div>
             )}
           </div>
-          {datos && (<div className="card shadow-card">
-              <h3 className="title-md mb-2">Monto a pagar</h3>
-              <p className="text-blue-600 text-xl font-semibold">
-                USD {(-1* datos.saldoFavorUSD).toFixed(2)}
-              </p>
-              <p className="text-blue-600 text-xl font-semibold">
-                Bs. {(datos.saldoFavorUSD*tasaVED).toFixed(2)}
-              </p>
-              <p className="text-gray-700 text-lg font-medium">
-                Tasa del día: {tasaVED ? tasaVED.toFixed(2) : "Cargando..."} VED/USD
-              </p>
-            </div>)}
-        </div>
 
           <div className="text-center mb-8">
             <button
@@ -161,10 +168,10 @@ export default function MiCuentaPage() {
               invoices={currentInvoices}
               tasaVED={tasaVED}
               router={router}
-              currentPage={currentPage}       // 🔹 nuevo
-              totalPages={totalPages}         // 🔹 nuevo
-              onPrevPage={handlePrevPage}     // 🔹 nuevo
-              onNextPage={handleNextPage}     // 🔹 nuevo
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPrevPage={handlePrevPage}
+              onNextPage={handleNextPage}
             />
           )}
         </div>

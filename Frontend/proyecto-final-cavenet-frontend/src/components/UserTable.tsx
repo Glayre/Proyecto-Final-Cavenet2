@@ -4,29 +4,10 @@ import App from "next/app";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
-interface User {
-  id: string;
-  cedula: string;
-  nombre: string;
-  apellido: string;
-  email: string;
-  telefono: string;
-  direccion: {
-    calle: string;
-    ciudad: string;
-    sede: string;
 
-  };
-    rol: "admin" | "user";
-    isDeleted: boolean;
-    saldoFavorVED: number;
-    updatedAt: string;
-    createdAt: string;
-    
-  }
 
 interface Props {
-  Users: User[];
+  Users: any[];
   router: AppRouterInstance;
 }
 
@@ -55,7 +36,7 @@ export default function UserTable({ Users, router }: Props) {
         </thead>
         <tbody>
           {Users.map((user) => {
-            
+            console.log("👤 Usuario:" , user);
             return (
                 <tr key={user.id} className="border-b hover:bg-color-cavGray">
                 <td className="px-4 py-2 font-medium text-color-cavDark">{user.cedula}</td>

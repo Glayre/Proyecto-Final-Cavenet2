@@ -8,23 +8,27 @@ type DatoProps = {
   placeholder?: string;
 };
 
-const Dato = ({ label, value, onChange, placeholder = "" }: DatoProps) => {
-  return (
-    <div className="flex flex-col w-full">
-      <label className="text-[16px] font-light mb-2">{label}</label>
-      <input
-        className="w-full h-8 mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-};
+const Dato = ({ label, value, onChange, placeholder = "" }: DatoProps) => (
+  <div className="flex flex-col w-full">
+    <label className="text-[16px] font-light mb-2">{label}</label>
+    <input
+      className="w-full h-8 mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  </div>
+);
 
 export default function Page() {
-  const planesHogar = ["BÁSICO", "BÁSICO Plus"];
-  const planesPyme = ["Bronce PyME", "Plata PyME", "Oro PyME", "Diamante PyME"];
+  // 🔹 Planes disponibles en la DB
+  const planesHogar = ["Plan Hogar Básico"];
+  const planesPyme = [
+    "Plan Pyme Bronce",
+    "Plan Pyme Plata",
+    "Plan Pyme Oro",
+    "Plan Pyme Diamante",
+  ];
 
   const [formData, setFormData] = useState({
     nombres: "",
@@ -42,14 +46,19 @@ export default function Page() {
     correoAlternativo: "",
   });
 
-
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
+    // Validación rápida antes de enviar
+    if (!formData.nombres || !formData.apellidos || !formData.cedula || !formData.correo || !formData.plan) {
+      alert("⚠️ Debes completar todos los campos obligatorios");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:4000/api/contrato", {
+      const res = await fetch("http://localhost:4000/api/registro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -57,13 +66,13 @@ export default function Page() {
 
       const data = await res.json();
       if (res.ok) {
-        alert("✅ Contrato creado exitosamente");
-        console.log(data);
+        alert("✅ Registro creado exitosamente");
+        console.log("Registro:", data);
       } else {
-        alert("❌ Error: " + data.error);
+        alert("❌ Error: " + (data.error || data.mensaje || "Error desconocido"));
       }
     } catch (err) {
-      alert("❌ Error de conexión");
+      alert("❌ Error de conexión con el servidor");
     }
   };
 
@@ -71,7 +80,9 @@ export default function Page() {
     <main className="flex flex-col lg:flex-row w-full bg-white text-black items-center lg:items-start justify-center py-12">
       {/* 🔹 Formulario */}
       <section className="grid grid-cols-2 justify-center items-center gap-4 px-12 max-w-106.25 mx-auto lg:mx-0 lg:ml-24 mt-12">
-        <h1 className="text-[35px] font-semibold text-center col-span-2">Contrato para Hogares</h1>
+        <h1 className="text-[35px] font-semibold text-center col-span-2">
+          Registro para Hogares
+        </h1>
 
         <h2 className="text-[30px] font-semibold mt-6 col-span-2">Plan</h2>
         <div className="col-span-2">
@@ -132,28 +143,6 @@ export default function Page() {
 }
 
 // 🔧 Componentes reutilizables tipados
-type InputProps = {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-};
-
-function Input({ label, value, onChange, placeholder = "" }: InputProps) {
-  return (
-    <div className="flex flex-col">
-      <label className="text-[25px] font-light mb-2">{label}</label>
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="h-12.75 px-4 bg-white/60 border border-[#2041E3] rounded-md"
-      />
-    </div>
-  );
-}
-
 type SelectProps = {
   label: string;
   options: string[];

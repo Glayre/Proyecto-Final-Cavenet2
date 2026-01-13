@@ -2,7 +2,7 @@
 import Hero from "../components/Hero";
 import PlanCard from "../components/PlanCard";
 import Benefits from "../components/Benefits";
-import Link from "next/link"; // 👈 Importamos Link
+import Link from "next/link";
 
 export default function Home() {
   const planesHogar = [
@@ -94,9 +94,10 @@ export default function Home() {
           Contrata hoy mismo tu plan de Internet de Fibra Óptica y disfruta de
           streaming, gaming y teletrabajo sin interrupciones.
         </p>
-        {/* 🔹 Botón corregido con Link */}
+        
+        {/* 🔹 Botón corregido: Ahora apunta a la carpeta /registro */}
         <Link
-          href="/contratar"
+          href="/registro"
           className="bg-white text-[var(--color-cavenetBlue)] px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-200 transition inline-block"
         >
           Contratar Ahora

@@ -80,17 +80,17 @@ export default function MiCuentaPage() {
         setDatos(data);
         setFormData(data);
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => setError(err));
   }, [router]);
 
   return (
     <main className="px-6 py-12 mt-12">
-      <UserNav />
+      <UserNav userData={datos} />
       <h1 className="title-xl text-center">Configuración de cuenta</h1>
 
       {error ? (
         <p className="text-center text-red-500 w-full">{error}</p>
-      ) : data ? (
+      ) : datos ? (
         <div className="max-w-4xl mx-auto">
           <h2>Datos</h2>
           <form className="flex flex-col gap-4 mt-4">
@@ -157,13 +157,14 @@ export default function MiCuentaPage() {
               className="px-4 py-2 bg-blue-600 text-white rounded col-span-2 hover:bg-blue-700 w-32 mt-4"
               onClick={(e) => {
                 e.preventDefault();
-                apiFetch("/api/users/" + formData?._id, {
+                apiFetch("/api/users/" + localStorage.getItem("userId"), {
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + localStorage.getItem("authToken"),
                   },
                   method: "PATCH",
                   body: JSON.stringify({
+                    userId: localStorage.getItem("userId"),
                     email: formData?.email,
                     nombre: formData?.nombre,
                     apellido: formData?.apellido,
@@ -173,6 +174,7 @@ export default function MiCuentaPage() {
                   .then((data) => {
                     setDatos(data);
                     setFormData(data);
+                    router.push("/mi-cuenta");
                   })
                   .catch((err) => setError(err.message));
               }}

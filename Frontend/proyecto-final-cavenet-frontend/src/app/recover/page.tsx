@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 🔹 Importar router
+import { useRouter } from "next/navigation";
 
 export default function RecuperarPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // 🔹 Inicializar router
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,93 +19,106 @@ export default function RecuperarPage() {
       });
 
       const data = await res.json();
-      console.log("Respuesta del backend:", data);
 
-      if (!res.ok || data.error) {
-        alert("❌ Ocurrió un error\nNo se encontró la información relacionada");
+      // 1. Manejo de Errores según Status Code del Backend
+      if (res.status === 404) {
+        alert("❌ Correo no encontrado o asociado");
+      } else if (res.status === 500) {
+        alert("💥 Error interno en el servidor. Intente más tarde.");
+      } else if (res.ok) {
+        // 2. Éxito (Status 200)
+        alert("📩 Se ha enviado un enlace con un código de recuperación a tu correo.");
+        router.push("/login");
       } else {
-        alert("📩 Revisa tu correo para continuar");
+        alert(`⚠️ ${data.error || "Ocurrió un error inesperado"}`);
       }
     } catch (err) {
-      alert("❌ Error: " + (err as Error).message);
+      alert("❌ Error de conexión al servidor");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="flex h-screen">
-      {/* 🔹 Formulario lado izquierdo */}
-      <section className="w-1/2 flex items-center justify-center bg-white px-8">
-        <div className="w-[600px] h-[678px] bg-[#FFFEFE] border border-[#2041E3] rounded-[25px] shadow-lg flex flex-col justify-center items-center p-8 relative">
-          {/* 🔹 Flecha + título alineados */}
-          <div className="flex items-center gap-2 mb-4">
-            <button onClick={() => router.push("/login")} className="inline-flex items-center">
+    <main className="flex h-screen bg-white">
+      <section className="w-1/2 flex items-center justify-center px-8">
+        <div className="w-[600px] h-[678px] bg-[#FFFEFE] border border-[#2041E3] rounded-[25px] shadow-lg flex flex-col p-8 relative">
+          
+          {/* 🔹 CABECERA AJUSTADA (Bajamos a mt-24 y alineamos flecha) */}
+          <div className="flex items-center justify-center w-full mt-24 mb-12 relative px-4">
+            <button 
+              onClick={() => router.push("/login")} 
+              className="absolute left-6 -top-1 p-2 hover:scale-110 transition-transform flex items-center"
+              type="button"
+            >
               <img
                 src="/flechaizquierda.png"
                 alt="Volver"
-                className="w-7 h-7 svg-icon"
+                className="w-7 h-7"
+                style={{ 
+                  filter: "invert(21%) sepia(87%) saturate(3470%) hue-rotate(224deg) brightness(91%) contrast(101%)" 
+                }}
               />
             </button>
-            <h1 className="text-3xl font-bold text-cavenetBlue">
+            
+            <h1 className="text-4xl font-bold text-[#2041E3] text-center">
               Recuperar Contraseña
             </h1>
           </div>
 
-          {/* 🔹 Bloque visual ajustado */}
-          <div className="text-center text-sm mb-6 space-y-1">
-            <p>¿No tienes cuenta?</p>
-            <a href="/register" className="text-cavenetIndigo hover:underline font-medium">
+          {/* Sección de registro con espaciado optimizado */}
+          <div className="text-center text-sm mb-16 space-y-2">
+            <p className="text-gray-500 text-base">¿No tienes cuenta?</p>
+            <a href="/register" className="text-[#2041E3] hover:underline font-bold text-base">
               Regístrate Aquí
             </a>
           </div>
 
-          <form onSubmit={handleSubmit} className="w-full space-y-4">
+          {/* Formulario con mayor padding lateral para equilibrio visual */}
+          <form onSubmit={handleSubmit} className="w-full space-y-8 px-12">
             <input
               type="email"
-              name="email"
               placeholder="Ingrese su correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-cavenetIndigo"
+              className="w-full border border-gray-300 rounded-xl px-5 py-5 focus:ring-2 focus:ring-[#2041E3] outline-none text-lg shadow-sm"
               required
             />
 
             <button
               type="submit"
-              className="w-full bg-cavenetBlue text-white py-2 rounded-lg hover:bg-cavenetIndigo transition"
+              className="w-full bg-[#2041E3] text-white py-5 rounded-xl hover:bg-blue-800 transition-all font-black text-xl shadow-md active:scale-[0.98]"
               disabled={loading}
             >
-              {loading ? "Buscando información del cliente..." : "Continuar"}
+              {loading ? "Verificando..." : "Continuar"}
             </button>
           </form>
 
-          {/* 🔹 Animación de búsqueda */}
+          {/* Estado de carga animado */}
           {loading && (
-            <div className="absolute bottom-6 text-center text-cavenetIndigo text-sm">
-              <p>Buscando información del cliente</p>
-              <p>Por favor espere...</p>
+            <div className="absolute bottom-16 left-0 right-0 text-center text-[#2041E3] animate-pulse">
+              <p className="font-bold text-sm uppercase tracking-[0.3em]">Verificando en base de datos</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* 🔹 Bloque azul lado derecho */}
+      {/* Lado derecho (Banner Informativo) */}
       <section
-        className="w-1/2 flex flex-col items-center justify-center text-white relative"
+        className="hidden md:flex w-1/2 flex-col items-center justify-center text-white relative"
         style={{
           backgroundImage: "url('/fondo-azul-pagina-web.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="text-center px-8">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <img src="/Vector.png" alt="Decorativo" className="w-6 h-6" />
-            <h2 className="text-5xl font-extrabold leading-tight">Internet Fibra</h2>
+        <div className="text-center px-12">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <img src="/Vector.png" alt="Logo" className="w-10 h-10" />
+            <h2 className="text-6xl font-black">Internet Fibra</h2>
           </div>
-          <h2 className="text-5xl font-extrabold leading-tight mb-4">Óptica</h2>
-          <p className="text-2xl font-semibold text-white">¡EL FUTURO DE LA CONEXIÓN, HOY!</p>
+          <h2 className="text-6xl font-black mb-6">Óptica</h2>
+          <p className="text-2xl font-light tracking-widest uppercase">¡El futuro de la conexión, hoy!</p>
         </div>
       </section>
     </main>

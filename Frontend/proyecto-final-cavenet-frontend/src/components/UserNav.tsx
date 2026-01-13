@@ -3,17 +3,20 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const UserNav = () => {
+interface props {
+  userData: any | null;
+}
+
+const UserNav = ({ userData }: props) => {
   const [user, setUser] = useState<any | null>(null); // 🔹 MODIFICADO: estado para el usuario
 
   useEffect(() => {
-    const stored = localStorage.getItem("authUser");
-    setUser(stored ? JSON.parse(stored) : null); // 🔹 MODIFICADO: lectura segura en cliente
-  }, []);
+    setUser(userData); // 🔹 MODIFICADO: asigna los datos del usuario al estado
+  }, [userData]);
 
   const Salir = () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("authUser");
+    localStorage.removeItem("userId");
     window.location.href = "/login";
   };
 
