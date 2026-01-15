@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+// --- Tipado para los inputs de datos ---
 type DatoProps = {
   label: string;
   value: string;
@@ -10,9 +11,9 @@ type DatoProps = {
 
 const Dato = ({ label, value, onChange, placeholder = "" }: DatoProps) => (
   <div className="flex flex-col w-full">
-    <label className="text-[16px] font-light mb-2">{label}</label>
+    <label className="text-[16px] font-semibold text-gray-700 mb-2">{label}</label>
     <input
-      className="w-full h-8 mb-4 px-4 bg-white/60 border border-[#2041E3] rounded-md"
+      className="w-full h-10 mb-4 px-4 bg-white border border-[#2041E3] rounded-md focus:ring-2 focus:ring-blue-400 outline-none transition-all"
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
@@ -21,15 +22,14 @@ const Dato = ({ label, value, onChange, placeholder = "" }: DatoProps) => (
 );
 
 export default function Page() {
-  // 🔹 Planes disponibles en la DB
-  const planesHogar = ["Plan Hogar Básico"];
-  const planesPyme = [
-    "Plan Pyme Bronce",
-    "Plan Pyme Plata",
-    "Plan Pyme Oro",
-    "Plan Pyme Diamante",
+  const planesHogar = [
+    "Plan Hogar Básico",
+    "Plan Hogar Pro",
+    "Plan Hogar Gamer",
+    "Plan Prueba Cliente"
   ];
 
+  // MANTENEMOS TU LÓGICA DE ESTADO ORIGINAL
   const [formData, setFormData] = useState({
     nombres: "",
     apellidos: "",
@@ -50,10 +50,10 @@ export default function Page() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // MANTENEMOS TU FUNCIÓN SUBMIT ORIGINAL
   const handleSubmit = async () => {
-    // Validación rápida antes de enviar
-    if (!formData.nombres || !formData.apellidos || !formData.cedula || !formData.correo || !formData.plan) {
-      alert("⚠️ Debes completar todos los campos obligatorios");
+    if (!formData.nombres || !formData.apellidos || !formData.cedula || !formData.correo || !formData.plan || !formData.telefono) {
+      alert("⚠️ Por favor, complete los campos obligatorios.");
       return;
     }
 
@@ -65,122 +65,129 @@ export default function Page() {
       });
 
       const data = await res.json();
+
       if (res.ok) {
-        alert("✅ Registro creado exitosamente");
-        console.log("Registro:", data);
+        alert("✅ Solicitud enviada con éxito.");
+        setFormData({
+          nombres: "", apellidos: "", cedula: "", fechaNacimiento: "",
+          correo: "", ciudad: "", callePrincipal: "", calleSecundaria: "",
+          numeroCasa: "", plan: "", telefono: "", otroContacto: "", correoAlternativo: ""
+        });
       } else {
-        alert("❌ Error: " + (data.error || data.mensaje || "Error desconocido"));
+        alert("❌ Error: " + (data.error || "No se pudo procesar"));
       }
     } catch (err) {
-      alert("❌ Error de conexión con el servidor");
+      alert("❌ Error de conexión");
     }
   };
 
   return (
-    <main className="flex flex-col lg:flex-row w-full bg-white text-black items-center lg:items-start justify-center py-12">
-      {/* 🔹 Formulario */}
-      <section className="grid grid-cols-2 justify-center items-center gap-4 px-12 max-w-106.25 mx-auto lg:mx-0 lg:ml-24 mt-12">
-        <h1 className="text-[35px] font-semibold text-center col-span-2">
-          Registro para Hogares
-        </h1>
+    // mt-12 y pt-20 aseguran que el formulario baje y no sea tapado por el Navbar
+    <main className="flex flex-col items-center w-full min-h-screen bg-gray-50 text-black pt-20 pb-20 px-4 mt-12">
+      
+      {/* Contenedor Principal */}
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl items-stretch justify-center gap-8">
+        
+        {/* 🔹 Sección del Formulario */}
+        <section className="bg-white p-8 md:p-12 rounded-3xl shadow-xl w-full flex-1 border border-gray-100 flex flex-col justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-center text-[#2041E3] mb-10">
+              Registro para Hogares
+            </h1>
 
-        <h2 className="text-[30px] font-semibold mt-6 col-span-2">Plan</h2>
-        <div className="col-span-2">
-          <Select
-            label="Plan de Navegación"
-            options={planesHogar}
-            value={formData.plan}
-            onChange={(v: string) => handleChange("plan", v)}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+              <h2 className="text-2xl font-bold mt-4 col-span-full border-b pb-2 mb-6 text-gray-800">Selección de Plan</h2>
+              <div className="col-span-full mb-6">
+                <Select
+                  label="Plan de Navegación Disponible"
+                  options={planesHogar}
+                  value={formData.plan}
+                  onChange={(v) => handleChange("plan", v)}
+                />
+              </div>
+
+              <h2 className="text-2xl font-bold mt-4 col-span-full border-b pb-2 mb-6 text-gray-800">Datos Personales</h2>
+              <Dato label="Nombres *" value={formData.nombres} onChange={(v) => handleChange("nombres", v)} />
+              <Dato label="Apellidos *" value={formData.apellidos} onChange={(v) => handleChange("apellidos", v)} />
+              <Dato label="Cédula *" value={formData.cedula} onChange={(v) => handleChange("cedula", v)} />
+              <Dato label="Fecha de Nacimiento" placeholder="DD/MM/AAAA" value={formData.fechaNacimiento} onChange={(v) => handleChange("fechaNacimiento", v)} />
+              <div className="col-span-full">
+                <Dato label="Correo Electrónico *" value={formData.correo} onChange={(v) => handleChange("correo", v)} />
+              </div>
+
+              <h2 className="text-2xl font-bold mt-4 col-span-full border-b pb-2 mb-6 text-gray-800">Ubicación y Contacto</h2>
+              <Dato label="Ciudad" value={formData.ciudad} onChange={(v) => handleChange("ciudad", v)} />
+              <Dato label="Teléfono *" value={formData.telefono} onChange={(v) => handleChange("telefono", v)} />
+              <Dato label="Calle Principal" value={formData.callePrincipal} onChange={(v) => handleChange("callePrincipal", v)} />
+              <Dato label="Número de Casa/Apto" value={formData.numeroCasa} onChange={(v) => handleChange("numeroCasa", v)} />
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={handleSubmit}
+              className="w-full md:w-80 h-14 bg-[#2041E3] text-white font-bold text-xl rounded-2xl hover:bg-[#1a36b0] hover:shadow-2xl transition-all active:scale-95 shadow-lg"
+            >
+              Finalizar Registro
+            </button>
+          </div>
+        </section>
+
+        {/* 🔹 Aside de Imágenes */}
+        <aside className="hidden lg:flex flex-col gap-6 w-[450px]">
+          <ImageBlock
+            src="/conexionhogar.png"
+            alt="Hogar Conectado"
+            text="Conexión rápida en tu hogar."
           />
-        </div>
-
-        <h2 className="text-[30px] font-semibold col-span-2">Datos Personales</h2>
-        <Dato label="Nombres" value={formData.nombres} onChange={(v) => handleChange("nombres", v)} />
-        <Dato label="Apellidos" value={formData.apellidos} onChange={(v) => handleChange("apellidos", v)} />
-        <Dato label="Cédula" value={formData.cedula} onChange={(v) => handleChange("cedula", v)} />
-        <Dato label="Fecha de Nacimiento" placeholder="dd/mm/aaaa" value={formData.fechaNacimiento} onChange={(v) => handleChange("fechaNacimiento", v)} />
-        <Dato label="Correo Electrónico" value={formData.correo} onChange={(v) => handleChange("correo", v)} />
-
-        <h2 className="text-[30px] font-semibold mt-6 col-span-2">Dirección</h2>
-        <Dato label="Ciudad" value={formData.ciudad} onChange={(v) => handleChange("ciudad", v)} />
-        <Dato label="Calle Principal" value={formData.callePrincipal} onChange={(v) => handleChange("callePrincipal", v)} />
-        <Dato label="Calle Secundaria" value={formData.calleSecundaria} onChange={(v) => handleChange("calleSecundaria", v)} />
-        <Dato label="Número de casa o apartamento" value={formData.numeroCasa} onChange={(v) => handleChange("numeroCasa", v)} />
-
-        <h2 className="text-[30px] font-semibold mt-6 col-span-2">Datos de contacto</h2>
-        <Dato label="Teléfono" value={formData.telefono} onChange={(v) => handleChange("telefono", v)} />
-        <Dato label="Otro número de contacto (Opcional)" value={formData.otroContacto} onChange={(v) => handleChange("otroContacto", v)} />
-        <Dato label="Correo Electrónico alternativo" value={formData.correoAlternativo} onChange={(v) => handleChange("correoAlternativo", v)} />
-
-        <button
-          onClick={handleSubmit}
-          className="w-59.5 h-12 bg-[#2041E3] text-white font-bold text-[20px] rounded-md hover:bg-[#1a36b0] transition self-center mt-8 col-span-2 flex items-center justify-center"
-        >
-          Procesar
-        </button>
-      </section>
-
-      {/* 🔹 Imágenes con texto */}
-      <aside className="hidden lg:flex flex-col gap-12 px-8 py-12 w-150">
-        <ImageBlock
-          src="/conexionhogar.png"
-          alt="Conectamos tu hogar"
-          text="Conectamos tu hogar con el mundo digital de forma rápida y segura."
-        />
-        <ImageBlock
-          src="/conexionnavegacion.jpg"
-          alt="Entretenimiento sin límites"
-          text="Disfruta de entretenimiento sin límites con nuestra conexión de alta velocidad."
-        />
-        <ImageBlock
-          src="/trabajoremoto.jpg"
-          alt="Estabilidad para trabajar"
-          text="Trabaja desde casa con la estabilidad que necesitas en tu conexión."
-        />
-      </aside>
+          <ImageBlock
+            src="/conexionnavegacion.jpg"
+            alt="Streaming"
+            text="Streaming sin interrupciones."
+          />
+          <ImageBlock
+            src="/trabajoremoto.jpg"
+            alt="Home Office"
+            text="Estabilidad para teletrabajo."
+          />
+        </aside>
+      </div>
     </main>
   );
 }
 
-// 🔧 Componentes reutilizables tipados
-type SelectProps = {
-  label: string;
-  options: string[];
-  value: string;
-  onChange: (value: string) => void;
-};
+// --- Componentes Internos ---
 
-function Select({ label, options, value, onChange }: SelectProps) {
+function Select({ label, options, value, onChange }: { label: string, options: string[], value: string, onChange: (v: string) => void }) {
   return (
     <div className="flex flex-col">
-      <label className="text-[25px] font-light mb-2">{label}</label>
+      <label className="text-lg font-medium mb-2 text-gray-700">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-12.75 px-4 bg-white/60 border border-[#2041E3] rounded-md"
+        className="h-12 px-4 bg-white border border-[#2041E3] rounded-md focus:ring-2 focus:ring-blue-300 outline-none cursor-pointer"
       >
-        <option value="">Seleccione una opción</option>
-        {options.map((opt: string, idx: number) => (
-          <option key={idx} value={opt}>
-            {opt}
-          </option>
+        <option value="">Seleccione el plan deseado</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>{opt}</option>
         ))}
       </select>
     </div>
   );
 }
 
-type ImageBlockProps = {
-  src: string;
-  alt: string;
-  text: string;
-};
-
-function ImageBlock({ src, alt, text }: ImageBlockProps) {
+function ImageBlock({ src, alt, text }: { src: string, alt: string, text: string }) {
   return (
-    <div className="flex flex-col items-center text-center">
-      <img src={src} alt={alt} className="rounded-md shadow-md w-full" />
-      <p className="mt-4 text-[18px] font-medium text-[#3E3B43]">{text}</p>
+    <div className="flex-1 flex flex-col group min-h-0">
+      <div className="flex-1 overflow-hidden rounded-3xl shadow-lg border border-gray-200">
+        <img 
+          src={src} 
+          alt={alt} 
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+          onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x250?text=Cavenet"; }}
+        />
+      </div>
+      <p className="mt-3 text-sm font-semibold text-gray-500 text-center">{text}</p>
     </div>
   );
 }

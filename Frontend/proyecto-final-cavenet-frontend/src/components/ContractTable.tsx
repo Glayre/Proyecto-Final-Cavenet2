@@ -1,58 +1,5 @@
 "use client";
-
-import App from "next/app";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-
-
-/*
-Ejemplo de datos de contratos:
-{
-		"_id": "69658dc8cf5a5ee39c8f6388",
-		"clienteId": {
-			"_id": "69654243acd8052d094450bc",
-			"cedula": "12345679",
-			"email": "cliente@example.com",
-			"nombre": "Juan",
-			"apellido": "Pérez"
-		},
-		"planId": {
-			"_id": "69657341d3ecbf64c20942d1",
-			"nombre": "Plan Prueba Cliente",
-			"precioUSD": 15
-		},
-		"correoAlternativo": "cliente@example.com",
-		"estado": "activo",
-		"fechaInicio": "2026-01-13T00:11:52.047Z",
-		"createdAt": "2026-01-13T00:11:52.055Z",
-		"updatedAt": "2026-01-13T00:11:52.055Z",
-		"__v": 0
-	}
-]
-
-*/
-
-
-interface Contract {
-  _id: string;
-  clienteId: {
-    _id: string;
-    cedula: string;
-    email: string;
-    nombre: string;
-    apellido: string;
-  };
-  planId: {
-    _id: string;
-    nombre: string;
-    precioUSD: number;
-  };
-  correoAlternativo: string;
-  estado: string;
-  fechaInicio: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
 
 interface Props {
   Contracts: any[];
@@ -61,28 +8,86 @@ interface Props {
 
 export default function ContractTable({ Contracts, router }: Props) {
   
+  const handleToggleEstado = async (contratoId: string, estadoActual: string) => {
+    const nuevoEstado = estadoActual === "activo" ? "suspendido" : "activo";
+    const confirmar = confirm(`¿Estás seguro de cambiar el estado a: ${nuevoEstado.toUpperCase()}?`);
+
+    if (confirmar) {
+      try {
+        const response = await fetch(`http://localhost:4000/api/contrato/${contratoId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+          },
+          body: JSON.stringify({ estado: nuevoEstado })
+        });
+
+        if (response.ok) {
+          alert(`Contrato ${nuevoEstado} con éxito`);
+          window.location.reload(); 
+        } else {
+          alert("Error al actualizar el estado");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error de conexión con el servidor");
+      }
+    }
+  };
+
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-background  border border-gray-200">
-        <thead className="bg-background">
+      <table className="min-w-full bg-background shadow-card rounded-xl">
+        <thead>
           <tr className="bg-cavenetBlue text-white">
-            <th className="py-2 px-4 border-b">ID Contrato</th>
-            <th className="py-2 px-4 border-b">Cliente</th>
-            <th className="py-2 px-4 border-b">Plan</th>  
-            <th className="py-2 px-4 border-b">Correo Alternativo</th>
-            <th className="py-2 px-4 border-b">Estado</th>
-            <th className="py-2 px-4 border-b">Fecha Inicio</th>
+            <th className="px-4 py-2 text-left">Cliente</th>
+            <th className="px-4 py-2 text-left">Cédula</th>
+            <th className="px-4 py-2 text-left">Plan</th>
+            <th className="px-4 py-2 text-left">Precio (USD)</th>
+            <th className="px-4 py-2 text-left">Estado</th>
+            <th className="px-4 py-2 text-left">Fecha Inicio</th>
+            <th className="px-4 py-2 text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {Contracts.map((contract: Contract) => (
-            <tr key={contract._id} className="hover:bg-gray-100 cursor-pointer" onClick={() => router.push(`/contracts/${contract._id}`)}>
-              <td className="py-2 px-4 border-b">{contract._id}</td>
-              <td className="py-2 px-4 border-b">{contract.clienteId.nombre} {contract.clienteId.apellido}</td>
-              <td className="py-2 px-4 border-b">{contract.planId.nombre}</td>
-              <td className="py-2 px-4 border-b">{contract.correoAlternativo}</td>
-              <td className="py-2 px-4 border-b">{contract.estado}</td>
-              <td className="py-2 px-4 border-b">{contract.fechaInicio}</td>
+          {Contracts.map((contract) => (
+            <tr key={contract._id} className="border-b hover:bg-color-cavGray">
+              {/* CORRECCIÓN FINAL: Usamos 'clienteId' tal como viene en tu JSON de Insomnia */}
+              <td className="px-4 py-2 text-foreground">
+                {contract.clienteId?.nombre ? `${contract.clienteId.nombre} ${contract.clienteId.apellido}` : "Sin Nombre"}
+              </td>
+              <td className="px-4 py-2 text-foreground">
+                {contract.clienteId?.cedula || "S/C"}
+              </td>
+              <td className="px-4 py-2 font-bold text-foreground">
+                {contract.planId?.nombre || "Sin Plan"}
+              </td>
+              <td className="px-4 py-2 text-foreground">
+                ${contract.planId?.precioUSD || "0"}
+              </td>
+              <td className="px-4 py-2">
+                <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+                  contract.estado === "activo" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                }`}>
+                  {contract.estado}
+                </span>
+              </td>
+              <td className="px-4 py-2 text-sm text-gray-600">
+                {contract.fechaInicio ? new Date(contract.fechaInicio).toLocaleDateString() : "No definida"}
+              </td>
+              <td className="px-4 py-2 text-center">
+                <button
+                  onClick={() => handleToggleEstado(contract._id, contract.estado)}
+                  className={`font-bold py-1 px-4 rounded text-[11px] uppercase transition-colors shadow-sm ${
+                    contract.estado === "activo" 
+                      ? "bg-red-600 text-white hover:bg-red-800" 
+                      : "bg-green-600 text-white hover:bg-green-800"
+                  }`}
+                >
+                  {contract.estado === "activo" ? "Suspender" : "Reactivar"}
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -90,4 +95,3 @@ export default function ContractTable({ Contracts, router }: Props) {
     </div>
   );
 }
-        

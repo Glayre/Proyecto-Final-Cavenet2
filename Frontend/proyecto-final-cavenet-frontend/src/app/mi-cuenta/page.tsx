@@ -7,13 +7,17 @@ import UserNav from "@/components/UserNav";
 import { getTasaCambio } from "@/services/tasaDolar";
 
 export default function MiCuentaPage() {
+  // 🔹 ESTADOS ORIGINALES
   const [facturas, setFacturas] = useState<any[]>([]);
   const [datos, setDatos] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tasaVED, setTasaVED] = useState<number | undefined>(undefined); // Anexo: inicializado en null para validación
+  const [tasaVED, setTasaVED] = useState<number | undefined>(undefined);
   const router = useRouter();
 
-  // 🔹 Estados para paginación
+  // 🔹 ESTADOS DE CONTROL (Para evitar el flash)
+  const [isChecking, setIsChecking] = useState(true);
+
+  // 🔹 ESTADOS PARA PAGINACIÓN
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -21,16 +25,20 @@ export default function MiCuentaPage() {
     const token = localStorage.getItem("authToken");
     const id = localStorage.getItem("userId");
 
-    if (!token && !id) {
-      router.replace("/login"); // Anexo: replace para evitar volver atrás
+    // Redirección inmediata si no hay credenciales
+    if (!token || !id) {
+      router.replace("/login");
       return;
     }
 
+    // Si llegamos aquí, hay un token. Dejamos de mostrar el cargador inicial.
+    setIsChecking(false);
+
+    // Lógica de carga de datos original
     apiFetch("/api/users/" + id, { method: "GET" })
       .then((data) => {
         setDatos(data);
-        const parsedUser = data;
-        return parsedUser;
+        return data;
       })
       .then((parsedUser) => {
         apiFetch("/api/invoices/" + parsedUser._id, { method: "GET" })
@@ -43,7 +51,6 @@ export default function MiCuentaPage() {
       try {
         const tasa = await getTasaCambio();
         setTasaVED(tasa);
-        console.log("Tasa de cambio actualizada:", tasa);
       } catch (err) {
         console.error("Error al obtener la tasa de cambio:", err);
       }
@@ -52,29 +59,24 @@ export default function MiCuentaPage() {
     fetchTasa();
   }, [router]);
 
-  // 🔹 Normalizar estados y considerar "reportado"
+  // 🔹 LÓGICA DE NEGOCIO (SIN MODIFICACIONES)
   const facturasPendientes = facturas.filter(
-    (f) =>
-      ["pendiente", "vencido", "reportado"].includes(f.estado?.toLowerCase())
+    (f) => ["pendiente", "vencido", "reportado"].includes(f.estado?.toLowerCase())
   );
 
-  // 🔹 Usar montoPendiente en lugar de montoUSD
   const totalUSD = facturasPendientes.reduce(
     (sum, f) => sum + (f.montoPendiente || 0),
     0
   );
 
-  // 🔹 Recalcular Bs con montoPendiente
   const totalBs = facturasPendientes.reduce(
     (sum, f) => sum + ((f.montoPendiente || 0) * (f.tasaVED || 0)),
     0
   );
 
-  // 🔹 Calcular facturas de la página actual
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentInvoices = facturas.slice(indexOfFirstItem, indexOfLastItem);
-
   const totalPages = Math.ceil(facturas.length / itemsPerPage);
 
   const handleNextPage = () => {
@@ -84,6 +86,16 @@ export default function MiCuentaPage() {
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+
+  // 🛡️ ESCUDO ANTI-FLASH
+  // Si está verificando el token, mostramos una pantalla limpia
+  if (isChecking) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <main className="px-6 py-12 mt-12">
@@ -114,7 +126,6 @@ export default function MiCuentaPage() {
             </p>
           </div>
 
-          {/* 🔹 Resumen de estado de cuenta con anexos de protección */}
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div className="card shadow-card">
               <h3 className="title-md mb-2">Saldo a favor</h3>
@@ -136,11 +147,9 @@ export default function MiCuentaPage() {
               <div className="card shadow-card">
                 <h3 className="title-md mb-2">Monto a pagar</h3>
                 <p className="text-blue-600 text-xl font-semibold">
-                  {/* Anexo: Math.abs para mostrar monto positivo aunque el saldo sea negativo */}
                   USD {Math.abs(datos.saldoFavorUSD || 0).toFixed(2)}
                 </p>
                 <p className="text-blue-600 text-xl font-semibold">
-                  {/* Anexo: Validación de tasaVED para evitar errores matemáticos */}
                   Bs. {tasaVED ? (Math.abs(datos.saldoFavorUSD || 0) * tasaVED).toFixed(2) : "Cargando..."}
                 </p>
                 <p className="text-gray-500 text-xs mt-1">

@@ -48,7 +48,7 @@ export default function InvoiceTable({
             <th className="px-4 py-2 text-left">Estado</th>
             <th className="px-4 py-2 text-left">Detalle</th>
             <th className="px-4 py-2 text-left">Aviso</th>
-            <th className="px-4 py-2 text-left">Acción</th>
+            <th className="px-4 py-2 text-center">Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -88,7 +88,7 @@ export default function InvoiceTable({
             return (
               <tr
                 key={invoice.id}
-                className="border-b hover:bg-cavGray"
+                className="border-b hover:bg-cavGray transition-colors"
               >
                 <td className="px-4 py-2 font-medium text-cavDark">
                   {invoice.id}
@@ -96,7 +96,7 @@ export default function InvoiceTable({
                 <td className="px-4 py-2 text-foreground">
                   {invoice.fecha}
                 </td>
-                <td className="px-4 py-2 text-foreground">
+                <td className="px-4 py-2 text-foreground text-sm">
                   <div className="flex flex-col">
                     <span>Total: USD $ {totalUSD.toFixed(2)} / Bs. {totalBs}</span>
                     <span>Abonado: USD $ {abonadoUSD.toFixed(2)} / Bs. {abonadoBs}</span>
@@ -112,11 +112,11 @@ export default function InvoiceTable({
                     {estadoNormalizado}
                   </span>
                 </td>
-                <td className="px-4 py-2 text-foreground">
+                <td className="px-4 py-2 text-foreground text-sm">
                   {invoice.detalle ?? "—"} <br />
                   {invoice.moneda ?? ""}
                 </td>
-                <td className="px-4 py-2 text-foreground">
+                <td className="px-4 py-2 text-foreground text-xs italic">
                   {estadoNormalizado === "pendiente"
                     ? "Debe pagar antes del 10"
                     : estadoNormalizado === "Vencida"
@@ -127,34 +127,35 @@ export default function InvoiceTable({
                     ? "Factura pagada"
                     : "—"}
                 </td>
-                <td className="px-4 py-2">
-                  {estadoNormalizado === "pendiente" && (
-                    <button
-                      onClick={() => reportarPago(invoice.id)}
-                      className="hover:scale-105 transition-transform"
-                      title="Reportar pago"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        className="text-cavenetBlue"
+
+                {/* 🔘 COLUMNA DE ACCIÓN CENTRADA */}
+                <td className="px-4 py-2 text-center">
+                  <div className="flex justify-center items-center w-full min-h-[40px]">
+                    {estadoNormalizado === "pendiente" && (
+                      <button
+                        onClick={() => reportarPago(invoice.id)}
+                        className="bg-cavenetBlue text-white text-[11px] font-bold py-2 px-3 rounded hover:bg-[#1a36b0] transition-all shadow-sm uppercase whitespace-nowrap"
+                        title="Reportar pago"
                       >
-                        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h12v2H3v-2z" />
-                      </svg>
-                    </button>
-                  )}
-                  {estadoNormalizado === "Pagada" && (
-                    <span className="text-green-600 font-semibold">Pagado</span>
-                  )}
-                  {estadoNormalizado === "Vencida" && (
-                    <span className="text-red-600">Factura vencida</span>
-                  )}
-                  {estadoNormalizado === "reportado" && (
-                    <span className="text-blue-600">Factura reportada</span>
-                  )}
+                        Reportar Pago
+                      </button>
+                    )}
+                    {estadoNormalizado === "Pagada" && (
+                      <span className="text-green-600 font-bold text-sm uppercase">
+                        Pagada
+                      </span>
+                    )}
+                    {estadoNormalizado === "Vencida" && (
+                      <span className="text-red-600 font-bold text-sm uppercase">
+                        Vencida
+                      </span>
+                    )}
+                    {estadoNormalizado === "reportado" && (
+                      <span className="text-blue-600 font-bold text-sm uppercase">
+                        Reportada
+                      </span>
+                    )}
+                  </div>
                 </td>
               </tr>
             );
@@ -162,20 +163,21 @@ export default function InvoiceTable({
         </tbody>
       </table>
 
+      {/* Paginación */}
       {totalPages && totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
-            className="btn-secondary"
+            className="btn-secondary px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50 transition-colors"
             onClick={onPrevPage}
             disabled={currentPage === 1}
           >
             ← Anterior
           </button>
-          <span className="text-sm text-gray-700">
+          <span className="text-sm font-medium text-gray-700">
             Página {currentPage} de {totalPages}
           </span>
           <button
-            className="btn-secondary"
+            className="btn-secondary px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50 transition-colors"
             onClick={onNextPage}
             disabled={currentPage === totalPages}
           >

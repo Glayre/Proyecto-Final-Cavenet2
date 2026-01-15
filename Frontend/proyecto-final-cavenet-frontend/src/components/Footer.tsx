@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Image from "next/image"; // 🔹 para optimizar el logo
+import Image from "next/image"; 
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
@@ -15,18 +15,20 @@ export default function Footer() {
       {/* Logo centrado */}
       <div className="flex justify-center mb-8">
         <Image
-          src="/logocavenet1.png" //  logo en carpeta /public
+          src="/logocavenet1.png" 
           alt="Cavenet Logo"
           width={220}
           height={100}
           priority
+          // 🔹 CORRECCIÓN: Se añade style para mantener el aspect ratio
+          style={{ width: "auto", height: "auto" }} 
         />
       </div>
 
       {/* Redes sociales centradas */}
       <div className="flex justify-center gap-8 mb-8">
         <a
-          href="https://facebook.com/cavenet" // tu cuenta real
+          href="https://facebook.com/cavenet" 
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-[var(--color-cavenetIndigo)]"
@@ -34,7 +36,7 @@ export default function Footer() {
           <FaFacebookF size={28} />
         </a>
         <a
-          href="https://instagram.com/cavenettelecom.ve" // 👈 tu cuenta real
+          href="https://instagram.com/cavenettelecom.ve" 
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-[var(--color-cavenetIndigo)]"
@@ -42,7 +44,7 @@ export default function Footer() {
           <FaInstagram size={28} />
         </a>
         <a
-          href="https://twitter.com/cavenet" // 👈 tu cuenta real
+          href="https://twitter.com/cavenet" 
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-[var(--color-cavenetIndigo)]"

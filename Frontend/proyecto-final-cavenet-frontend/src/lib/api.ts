@@ -5,23 +5,37 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
 
-  // Construir headers: primero los de options, luego forzar Authorization
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string>),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
-  // 🔹 Log para depuración
-  console.log("➡️ apiFetch token:", token);
-  console.log("➡️ apiFetch headers:", headers);
-
   const res = await fetch(`${base}${path}`, { ...options, headers });
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ message: "Error de API" }));
-    throw new Error(err.message || `Error ${res.status}`);
+  // Si la respuesta es exitosa (200-299)
+  if (res.ok) {
+    return res.json();
   }
 
-  return res.json();
+  // --- MANEJO DE ERRORES (Si res.ok es false) ---
+  
+  let errorMessage = `Error ${res.status}`;
+  
+  // Obtenemos el texto plano primero para evitar bloquear el flujo
+  const bodyText = await res.text(); 
+
+  try {
+    // Intentamos convertir ese texto a JSON
+    const errorData = JSON.parse(bodyText);
+    errorMessage = errorData.message || errorData.error || errorMessage;
+  } catch (e) {
+    // Si no era un JSON, usamos el texto plano si existe
+    if (bodyText && bodyText.length < 100) { // Solo si no es un HTML gigante
+        errorMessage = bodyText;
+    }
+  }
+
+  // ❌ IMPORTANTE: Eliminamos el console.error de aquí para que no salte el overlay rojo en Next.js
+  throw new Error(errorMessage);
 }

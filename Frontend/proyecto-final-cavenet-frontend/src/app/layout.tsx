@@ -17,7 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-gray-50 text-gray-900">
+      {/* Anexamos suppressHydrationWarning en el body para evitar errores 
+          causados por extensiones del navegador que inyectan atributos (como ap-style)
+      */}
+      <body 
+        className="bg-gray-50 text-gray-900" 
+        suppressHydrationWarning={true}
+      >
         <AuthProvider>
           {/* 🔹 Navbar fijo arriba */}
           <Navbar />
@@ -32,4 +38,3 @@ export default function RootLayout({
     </html>
   );
 }
-
